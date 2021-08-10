@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class GiteeOauthController {
     @Autowired
@@ -21,7 +23,7 @@ public class GiteeOauthController {
     private String redirectUri;
 
     @GetMapping("/login")
-    public String login(@RequestParam(name = "code") String code) {
+    public String login(@RequestParam(name = "code") String code, HttpServletRequest request) {
         GithubTokenDTO githubTokenDTO = new GithubTokenDTO();
         githubTokenDTO.setCode(code);
         githubTokenDTO.setClientId(clientId);
@@ -29,7 +31,10 @@ public class GiteeOauthController {
         githubTokenDTO.setRedirectUri(redirectUri);
         String accessToken = giteeProvider.getAccessToken(githubTokenDTO);
         GiteeUserDTO user = giteeProvider.getUser(accessToken);
-        System.out.println(user);
+        if (user != null) {
+            request.getSession().setAttribute("user", user);
+            return "redirect:/";
+        }
         return "redirect:/";
     }
 }
