@@ -1,9 +1,7 @@
 package com.example.imcommunity.controller;
 
-import com.example.imcommunity.dto.AccessTokenDTO;
-import com.example.imcommunity.dto.GiteeTokenDTO;
+import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.dto.GiteeUserDTO;
-import com.example.imcommunity.dto.GithubUserDTO;
 import com.example.imcommunity.provider.GiteeProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class GiteeOauthController {
     @Autowired
-    GiteeProvider giteeProvider;
+    private GiteeProvider giteeProvider;
     @Value("${gitee.client.id}")
     private String clientId;
     @Value("${gitee.client.secret}")
@@ -24,12 +22,12 @@ public class GiteeOauthController {
 
     @GetMapping("/login")
     public String login(@RequestParam(name = "code") String code) {
-        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-        accessTokenDTO.setCode(code);
-        accessTokenDTO.setClientId(clientId);
-        accessTokenDTO.setClientSecret(clientSecret);
-        accessTokenDTO.setRedirectUri(redirectUri);
-        String accessToken = giteeProvider.getAccessToken(accessTokenDTO);
+        GithubTokenDTO githubTokenDTO = new GithubTokenDTO();
+        githubTokenDTO.setCode(code);
+        githubTokenDTO.setClientId(clientId);
+        githubTokenDTO.setClientSecret(clientSecret);
+        githubTokenDTO.setRedirectUri(redirectUri);
+        String accessToken = giteeProvider.getAccessToken(githubTokenDTO);
         GiteeUserDTO user = giteeProvider.getUser(accessToken);
         System.out.println(user);
         return "redirect:/";

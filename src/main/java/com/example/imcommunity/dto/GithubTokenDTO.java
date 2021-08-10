@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccessTokenDTO {
+public class GithubTokenDTO {
     private String clientId;
     private String clientSecret;
     private String code;

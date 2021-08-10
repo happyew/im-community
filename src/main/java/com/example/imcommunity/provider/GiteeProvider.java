@@ -1,6 +1,6 @@
 package com.example.imcommunity.provider;
 
-import com.example.imcommunity.dto.AccessTokenDTO;
+import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.dto.GiteeTokenDTO;
 import com.example.imcommunity.dto.GiteeUserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,10 +20,10 @@ public class GiteeProvider {
     /**
      * 获取token
      *
-     * @param accessTokenDTO 包含gitee回调的code，和本应用相关数据
+     * @param githubTokenDTO 包含gitee回调的code，和本应用相关数据
      * @return 字符串token
      */
-    public String getAccessToken(AccessTokenDTO accessTokenDTO) {
+    public String getAccessToken(GithubTokenDTO githubTokenDTO) {
         // 创建okhttp客户端
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
@@ -34,10 +34,9 @@ public class GiteeProvider {
         RequestBody body = null;
         try {
             // 转换成字符串json
-            String s = mapper.writeValueAsString(accessTokenDTO);
+            String s = mapper.writeValueAsString(githubTokenDTO);
             // 设置请求体
             body = RequestBody.create(mediaType, s);
-            System.out.println("body:" + s);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -50,10 +49,8 @@ public class GiteeProvider {
         // 接收响应
         try (Response response = client.newCall(request).execute()) {
             String string = response.body().string();
-            System.out.println(string);
             // 把json封装成对象
             GiteeTokenDTO giteeTokenDTO = mapper.readValue(string, GiteeTokenDTO.class);
-            System.out.println("token:" + giteeTokenDTO);
             // 返回dto
             return giteeTokenDTO.getAccessToken();
         } catch (IOException e) {
@@ -70,7 +67,6 @@ public class GiteeProvider {
      * @return Gitee用户信息
      */
     public GiteeUserDTO getUser(String accessToken) {
-        System.out.println(accessToken);
         // 创建okhttp客户端
         OkHttpClient client = new OkHttpClient();
         // 建立请求传入accessToken
@@ -80,7 +76,6 @@ public class GiteeProvider {
         // 接收响应
         try (Response response = client.newCall(request).execute()) {
             String json = response.body().string();
-            System.out.println("user: " + json);
             ObjectMapper mapper = new ObjectMapper();
             mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
             // 把json封装成对象，并返回

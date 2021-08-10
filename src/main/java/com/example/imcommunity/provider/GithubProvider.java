@@ -1,7 +1,7 @@
 package com.example.imcommunity.provider;
 
 
-import com.example.imcommunity.dto.AccessTokenDTO;
+import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.dto.GithubUserDTO;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @Component
 public class GithubProvider {
 
-    public String getAccessToken(AccessTokenDTO accessTokenDTO) {
+    public String getAccessToken(GithubTokenDTO githubTokenDTO) {
 
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
@@ -25,7 +25,7 @@ public class GithubProvider {
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         RequestBody body = null;
         try {
-            String s = mapper.writeValueAsString(accessTokenDTO);
+            String s = mapper.writeValueAsString(githubTokenDTO);
             body = RequestBody.create(mediaType, s);
             System.out.println(s);
         } catch (JsonProcessingException e) {
