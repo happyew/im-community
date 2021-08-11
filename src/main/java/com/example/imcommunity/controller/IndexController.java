@@ -33,7 +33,7 @@ public class IndexController {
                 if (cookie.getName().equals("token")) {
                     GiteeUser giteeUser = giteeUserRepository.findByToken(cookie.getValue());
                     if (giteeUser != null) {
-                        model.addAttribute("user", giteeUser);
+                        model.addAttribute("giteeUser", giteeUser);
                         model.addAttribute("isLogin", true);
                         return "index";
                     }
