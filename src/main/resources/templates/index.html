@@ -2,58 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首页</title>
-    <link th:replace="~{head::header}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 
 <div class="container-fluid">
-    <!--首页顶部导航栏-->
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">社区</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">社区</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="请输入关键词">
-                    </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
+            <a class="navbar-brand" href="#">社区首页</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="请输入关键词" aria-label="Search">
+                    <button class="btn btn-outline-success text-nowrap" type="submit">搜索</button>
                 </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li th:if="not ${session.user}"><a
-                            href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">Gitee登录</a>
+                <ul class="navbar-nav ms-auto d-flex mb-0">
+                    <li th:unless="${isLogin}"><a class="nav-link" role="button"
+                                                  href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">Gitee登录</a>
                     </li>
-                    <!--<li><a href="https://github.com/login/oauth/authorize?client_id=6b9551d7a3bf814322ab&redirect_uri=http://localhost:8080/callback&scope=user&state=1">Github登录</a></li>-->
-                    <li class="dropdown" th:unless="not ${session.user}">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="false"><img th:src="${session.user.avatarUrl}" alt="头像"
-                                                                           class="img-thumbnail" height="35" width="35"><span
-                                class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">消息</a></li>
-                            <li><a href="#">个人资料</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">退出</a></li>
+                    <li th:if="${isLogin}" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <img th:src="${giteeUser.avatarUrl}" alt="头像"
+                                 class="img-thumbnail" height="25" width="25">
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">资料</a></li>
+                            <li><a class="dropdown-item" href="#">消息</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout">退出</a></li>
                         </ul>
                     </li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+            </div>
+
+        </div>
     </nav>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

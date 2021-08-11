@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * Gitee相关逻辑
+ * Gitee验证用户相关逻辑
  */
 @Component
 public class GiteeProvider {
