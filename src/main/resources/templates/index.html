@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" aria-label="navi">
         <div class="container-fluid">
             <a class="navbar-brand ms-2" href="/">IM-Community</a>
-            <form class="me-auto ms-4">
+            <form class="me-auto ms-2">
                 <input type="search" class="form-control font-monospace" placeholder="Search..."
                        aria-label="Search">
             </form>
@@ -45,55 +45,71 @@
     </nav>
 </section>
 <section class="bg-light my-4">
-    <div class="container bg-white d-grid">
-        <h3 class="px-2 pt-4 font-monospace">Discovery</h3>
-        <ul class="nav nav-tabs my-4">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">最新</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">30天最热</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">7天最热</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">消灭零回复</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-        </ul>
-        <div class="container d-flex mt-4">
-            <img class="img-thumbnail" src="" alt="头像" width="64">
+    <div class="container bg-white d-flow p-4">
+        <div class="col-md-9 col-sm-12 float-start">
             <div class="container">
-                <a class="raw" href="#">
-                    <h5>Lorem ipsum dolor sit amet.</h5>
-                </a>
-                <span class="raw">
-                        <small class="text-muted">24 个回复</small>
-                        <small class="text-muted">6165 次浏览</small>
-                        <small class="text-muted">2021-01-10 04:22</small>
-                    </span>
+                <h3 class="px-2 pt-4 font-monospace">Discovery</h3>
+                <ul class="nav nav-tabs my-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">最新</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">30天最热</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">7天最热</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">消灭零回复</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+                <div class="container">
+                    <div class="d-flex m-4">
+                        <div class="flex-shrink-0">
+                            <img width="64px" class="img-thumbnail" src="/avatar.jpg" alt="...">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <a href="/index.html">
+                                <h5>Lorem ipsum dolor sit amet.</h5>
+                            </a>
+                            <span class="raw"><small class="text-muted">24 个回复</small>
+                                    <small class="text-muted">6165 次浏览</small>
+                                    <small class="text-muted">2021-01-10 04:22</small></span>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0 py-4 px-4">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination mb-0 py-4 px-4">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div class="col-md-3 col-sm-12 ms-auto mb-4">
+            <div class="container mt-4 pt-4">
+                <h2>Lorem ipsum dolor</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et beatae ex nulla laborum magni autem
+                    saepe
+                    officiis. Excepturi nostrum sunt reprehenderit praesentium ea eligendi voluptatum accusantium
+                    ratione neque, laborum molestiae?</p>
+            </div>
+        </div>
+    </div>
     </div>
 </section>
 <section class="py-2 text-center font-monospace">
