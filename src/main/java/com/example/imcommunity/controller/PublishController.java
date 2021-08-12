@@ -67,7 +67,23 @@ public class PublishController {
     public String save(@RequestParam(name = "title") String title,
                        @RequestParam(name = "description") String description,
                        @RequestParam(name = "tag") String tag,
-                       HttpServletRequest request) {
+                       HttpServletRequest request,
+                       Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
+        if (title == null | "".equals(title)) {
+            model.addAttribute("error", "标题不能为空！");
+            return "publish";
+        }
+        if (description == null | "".equals(description)) {
+            model.addAttribute("error", "描述不能为空！");
+            return "publish";
+        }
+        if (tag == null | "".equals(tag)) {
+            model.addAttribute("error", "标签不能为空！");
+            return "pubish";
+        }
         Question question = new Question();
         question.setGmtCreate(new Date());
         question.setGmtModified(question.getGmtCreate());
