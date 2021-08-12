@@ -1,14 +1,13 @@
 package com.example.imcommunity.controller;
 
-import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.dto.GiteeUserDTO;
+import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.provider.GiteeProvider;
 import com.example.imcommunity.repository.GiteeUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,7 +41,7 @@ public class GiteeOauthController {
      * @return 视图
      */
     @GetMapping("/login")
-    public String login(@RequestParam(name = "code") String code, HttpServletResponse response, Model model) {
+    public String login(@RequestParam(name = "code") String code, HttpServletResponse response) {
         GithubTokenDTO githubTokenDTO = new GithubTokenDTO();
         githubTokenDTO.setCode(code);
         githubTokenDTO.setClientId(clientId);
@@ -85,6 +84,7 @@ public class GiteeOauthController {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
+                    // 清除cookie里的token
                     response.addCookie(new Cookie("token", null));
                 }
             }

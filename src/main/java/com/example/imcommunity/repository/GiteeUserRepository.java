@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Gitee用户实体类JPA接口
  */
-public interface GiteeUserRepository extends JpaRepository<GiteeUser, Integer> {
+public interface GiteeUserRepository extends JpaRepository<GiteeUser, Long> {
     /**
      * 根据token查询用户
      *

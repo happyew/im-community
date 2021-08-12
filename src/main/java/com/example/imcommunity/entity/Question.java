@@ -7,45 +7,48 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.Objects;
 
 /**
- * Gitee用户信息实体类
+ * 问题实体类
  */
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class GiteeUser {
-    @Id @GeneratedValue(strategy = GenerationType.TABLE)
+public class Question {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-    private String accountId;
-    private String name;
-    @Column(unique = true)
-    private String token = UUID.randomUUID().toString();
-    private String avatarUrl;
+    private String title;
+    private String description;
+    private String tag;
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
-    private Date gmt_create;
+    private Date gmtCreate;
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
-    private Date gmt_modified;
-    @OneToMany(mappedBy = "giteeUser",cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Question> questions = new ArrayList<>();
+    private Date gmtModified;
+    private Long viewCount = 0L;
+    private Long commentCount = 0L;
+    private Long likeCount = 0L;
+    @ManyToOne(targetEntity = GiteeUser.class, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "gitee_user_id", referencedColumnName = "id")
+    private GiteeUser giteeUser;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        GiteeUser giteeUser = (GiteeUser) o;
+        Question question = (Question) o;
 
-        return Objects.equals(id, giteeUser.id);
+        return Objects.equals(id, question.id);
     }
 
     @Override
     public int hashCode() {
-        return 283613206;
+        return 1344421622;
     }
 }
