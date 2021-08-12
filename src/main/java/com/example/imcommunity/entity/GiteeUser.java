@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.*;
@@ -27,9 +28,11 @@ public class GiteeUser {
     private String avatarUrl;
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     private Date gmt_create;
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     private Date gmt_modified;
     @OneToMany(mappedBy = "giteeUser",cascade = CascadeType.ALL)
     @ToString.Exclude

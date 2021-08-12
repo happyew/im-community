@@ -10,6 +10,7 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Gitee验证用户相关逻辑
@@ -48,7 +49,7 @@ public class GiteeProvider {
                 .build();
         // 接收响应
         try (Response response = client.newCall(request).execute()) {
-            String string = response.body().string();
+            String string = Objects.requireNonNull(response.body()).string();
             // 把json封装成对象
             GiteeTokenDTO giteeTokenDTO = mapper.readValue(string, GiteeTokenDTO.class);
             // 返回dto

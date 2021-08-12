@@ -44,10 +44,10 @@
         </div>
     </nav>
 </section>
-<section class="bg-light my-4">
-    <div class="container bg-white d-flow p-4">
-        <div class="col-md-9 col-sm-12 float-start">
-            <div class="container">
+<section class="bg-light container">
+    <div class="bg-white row">
+        <div class="col-md-9 p-4">
+            <div>
                 <h3 class="px-2 pt-4 font-monospace">Discovery</h3>
                 <ul class="nav nav-tabs my-4">
                     <li class="nav-item">
@@ -66,19 +66,21 @@
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
-                <div class="container">
-                    <div class="d-flex m-4">
+                <div th:if="not ${questionDTOS==null}" class="container row">
+                    <div th:each="question,index:${questionDTOS}" th:object="${question}" class="d-flex ms-2 my-2 border-bottom">
                         <div class="flex-shrink-0">
-                            <img width="64px" class="img-thumbnail" src="/avatar.jpg" alt="...">
+                            <img th:src="*{avatarUrl}" width="55px" class="img-thumbnail" src="/avatar.jpg"
+                                 alt="avatar">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a href="/index.html">
-                                <h5>Lorem ipsum dolor sit amet.</h5>
+                            <a href="#">
+                                <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                             </a>
-                            <span class="raw"><small class="text-muted">24 个回复</small>
-                                    <small class="text-muted">6165 次浏览</small>
-                                    <small class="text-muted">2021-01-10 04:22</small></span>
+                            <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
+                                <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
+                                <small class="text-muted" th:text="${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}">2021-01-10 04:22</small></p>
                         </div>
+
                     </div>
                 </div>
                 <nav aria-label="Page navigation">
@@ -100,8 +102,8 @@
                 </nav>
             </div>
         </div>
-        <div class="col-md-3 col-sm-12 ms-auto mb-4">
-            <div class="container mt-4 pt-4">
+        <div class="col-md-3 p-4 mt-4">
+            <div>
                 <h2>Lorem ipsum dolor</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et beatae ex nulla laborum magni autem
                     saepe
@@ -110,10 +112,9 @@
             </div>
         </div>
     </div>
-    </div>
 </section>
-<section class="py-2 text-center font-monospace">
-    <footer class="container">
+<section class="row">
+    <footer class="container align-bottom py-2 text-center font-monospace">
         <small>Copyright © 2021 All Rights Reserved Powered By</small>
     </footer>
 </section>
