@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuestionDTO {
+    private Long id;
     private String title;
     private String description;
     private String tag;
@@ -17,4 +18,5 @@ public class QuestionDTO {
     private Long commentCount;
     private Long likeCount;
     private String avatarUrl;
+    private String username;
 }

@@ -31,7 +31,7 @@
                                      alt="avatar">
                             </div>-->
                             <div class="flex-grow-1 ms-3">
-                                <a class="text-decoration-none" href="#">
+                                <a th:href="@{'/question/'+${question.id}}" class="text-decoration-none" href="#">
                                     <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                                 </a>
                                 <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>

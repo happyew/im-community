@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -83,5 +84,19 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public Question save(Question question) {
         return questionRepository.save(question);
+    }
+
+    @Override
+    public QuestionDTO findById(Long id) {
+        Optional<Question> optional = questionRepository.findById(id);
+        if (optional.isPresent()) {
+            Question question = optional.get();
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
+            questionDTO.setUsername(question.getGiteeUser().getName());
+            return questionDTO;
+        }
+        return null;
     }
 }

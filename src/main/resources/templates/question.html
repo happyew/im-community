@@ -11,93 +11,22 @@
 </head>
 
 <body class="bg-light">
-<section th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" aria-label="navi">
-        <div class="container-fluid">
-            <a class="navbar-brand ms-2" href="/">IM-Community</a>
-            <form class="me-auto ms-2">
-                <input type="search" class="form-control font-monospace" placeholder="Search..."
-                       aria-label="Search">
-            </form>
-            <div th:unless="not ${session.user==null}" class="navbar-nav">
-                <a class="nav-item nav-link"
-                   href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">通过Gitee登录</a>
-            </div>
-            <div th:if="not ${session.user==null}" th:object="${session.user}" class="flex-shrink-0 dropdown ms-auto">
-                <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser2"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    <img th:src="*{avatarUrl}" src="/avatar.jpg" alt="avatar" width="32" height="32"
-                         class="rounded-circle img-thumbnail">
-                </a>
-                <ul class="dropdown-menu text-small shadow dropdown-menu-dark dropdown-menu-end"
-                    aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="/publish">发起提问</a></li>
-                    <li><a class="dropdown-item" href="/profile/question">个人资料</a></li>
-                    <li><a class="dropdown-item" href="#">消息中心</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="/logout">退出登录</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</section>
+<section th:replace="~{index::navbar}"></section>
 <section class="bg-light container">
     <div class="bg-white row mt-4 pb-4">
         <div class="col-md-9 p-4 mt-4 border-end">
             <div class="row border-bottom">
                 <div class="container ms-2 pb-4 me-4">
                     <h4>Lorem ipsum dolor sit amet consectetur.</h4>
-                    <small class="text-muted">作者：<span></span> | 发布时间：<span></span> | 浏览数：<span></span></small>
+                    <small class="text-muted me-3">作者：<span th:text="${questionDTO.username}"></span></small>
+                    <small class="text-muted me-3">发布时间：
+                        <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span></small>
+                    <small class="text-muted me-3">浏览数：<span th:text="${questionDTO.viewCount}"></span></small>
                 </div>
             </div>
             <div class="row">
                 <div class="container p-4 border-bottom">
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum, maiores nisi adipisci odit
-                        labore quidem qui corrupti iure dignissimos. Officiis incidunt animi aut perferendis! Modi
-                        ipsa praesentium reprehenderit autem esse?
-                        Obcaecati ipsam, a dolor tenetur nulla aut, modi consectetur debitis ducimus, suscipit quis
-                        laboriosam voluptatum ad unde totam sapiente neque saepe dolores! Quam corrupti sapiente
-                        culpa veniam accusamus voluptatem labore!
-                        Nobis aperiam numquam esse facilis? Consequatur voluptates et quo asperiores, labore
-                        accusantium consectetur, cupiditate eaque fugit blanditiis, atque ea sunt ullam inventore
-                        quasi sit molestias quos rem eveniet! Deserunt, molestiae.
-                        Temporibus atque assumenda fugit omnis facilis voluptatem voluptas neque illo tempora
-                        deleniti consequatur incidunt obcaecati a corporis maiores, aliquam harum fuga aperiam
-                        voluptatibus sint doloribus sit! Enim accusamus voluptas earum.
-                        Omnis quaerat iure, veniam, fugiat et autem inventore rem aut explicabo pariatur tempore
-                        sunt dolores ad esse tempora laudantium obcaecati iusto nihil dolorum molestias magnam
-                        repellat atque? Rem, ipsam fugiat Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Suscipit quam enim et quae ut natus excepturi distinctio blanditiis temporibus facilis
-                        voluptatibus doloribus ratione laborum aut iure sapiente nostrum, numquam nesciunt?
-                        Minima, cupiditate molestias. Mollitia cumque harum corrupti blanditiis deserunt, atque
-                        praesentium est libero qui recusandae officia quia quos quidem similique doloribus nostrum
-                        dolores molestias rerum cupiditate repudiandae neque minima at.
-                        Modi aperiam voluptatem rem ipsum ipsam voluptates omnis quia illo ad nemo. Mollitia
-                        officiis, magni tempore ipsum nihil asperiores aspernatur voluptatem laudantium facilis
-                        animi. Placeat sed expedita reiciendis vel accusantium.
-                        Quaerat itaque sed ipsa, molestias, officia dolor quidem eum molestiae aut ex mollitia
-                        numquam rem cumque. Distinctio culpa maiores praesentium voluptate aspernatur. Minima sit
-                        amet maxime officiis aspernatur, atque nemo.
-                        Nostrum dolor sit necessitatibus nihil, voluptatem sed nemo optio earum exercitationem vero
-                        ipsam? Accusantium fugit corporis labore delectus ratione numquam quas laudantium,
-                        molestias, sint quis at quae tenetur, repudiandae voluptatum!
-                        Ipsam, deleniti. Unde impedit libero ea ipsam quo, fuga ducimus consequuntur nostrum numquam
-                        maiores molestias labore dolor excepturi qui perspiciatis velit cupiditate fugit nihil quia
-                        deleniti odit iure. Rerum, similique.
-                        Recusandae, nihil dolor? Neque, illo id molestiae iusto modi mollitia libero harum aliquam.
-                        Temporibus sint eius, fuga, natus ipsa aliquam cumque placeat tempore assumenda ab amet
-                        omnis illum. Modi, provident.
-                        Incidunt deserunt cum officiis temporibus voluptate iusto repellat minus exercitationem,
-                        labore quae nesciunt, ipsam ducimus doloremque adipisci? Consequatur, excepturi provident
-                        expedita ipsum magni sapiente quidem eos voluptate laborum eius architecto.
-                        Quis, dolore a. Placeat unde ab earum at tempore, dolores provident vitae, aspernatur est
-                        nihil quis eaque libero architecto repellendus ipsum harum autem tenetur natus repudiandae?
-                        Dicta molestias consequatur distinctio.
-                        Qui necessitatibus, exercitationem illo eum sequi velit placeat ipsa quos. Porro facere nisi
-                        maiores soluta, error quaerat fugit voluptas velit iusto. Ratione, alias recusandae! Ad
-                        quasi similique aspernatur nobis saepe!</p>
+                    <p th:text="${questionDTO.description}"></p>
                 </div>
             </div>
             <div class="row">
@@ -109,12 +38,12 @@
             </div>
             <div class="row">
                 <div class="container pt-4 px-4">
-                    <h5 class="border-bottom pb-2">25个回复</h5>
+                    <h5 class="border-bottom pb-2"><span>0</span>个回复</h5>
                 </div>
             </div>
-            <div class="row">
-                <div th:if="not ${questionPageDTO==null}" class="container px-4">
-                    <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
+            <!--<div class="row">
+                <div th:if="not ${questionDTO==null}" class="container px-4">
+                    <div th:each="question,index:${questionDTO}" th:object="${question}"
                          class="d-flex ms-2 mt-2 border-bottom">
                         <div class="flex-shrink-0">
                             <img th:src="*{avatarUrl}" width="50px" class="img-thumbnail" src="/avatar.jpg"
@@ -128,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="container mt-4 px-4 border-bottom">
                     <h5>提交回复</h5>
@@ -137,18 +66,18 @@
             <div class="row">
                 <div class="container px-4 pt-2">
                     <div class="flex-shrink-0">
-                        <img th:src="*{avatarUrl}" width="45px" class="img-thumbnail me-2" src="/avatar.jpg"
+                        <img th:src="${questionDTO.avatarUrl}" width="45px" class="img-thumbnail me-2" src="/avatar.jpg"
                              alt="avatar">
-                        <small class="text-muted"><span></span>名字</small>
+                        <small class="text-muted"><span th:text="${questionDTO.username}">用户名</span></small>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="container pt-2 px-4">
-                    <form action="/" method="POST" class="form-floating justify-content-center">
-                            <textarea class="form-control" placeholder="请输入回复" id="floatingTextarea2"
+                    <form action="./" method="POST" class="form-floating justify-content-center">
+                            <textarea class="form-control" placeholder="请输入回复" name="content" id="content"
                                       style="height: 125px"></textarea>
-                        <label for="floatingTextarea2">回复</label>
+                        <label for="content">回复</label>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
                             <button type="submit" class="btn btn-primary">提交</button>
                         </div>
@@ -160,9 +89,9 @@
             <div class="container row ms-1 py-4 border-bottom">
                 <h5>发起人</h5>
                 <div class="flex-shrink-0 mt-1">
-                    <img th:src="*{avatarUrl}" width="50px" class="img-thumbnail me-2" src="/avatar.jpg"
+                    <img th:src="${questionDTO.avatarUrl}" width="50px" class="img-thumbnail me-2" src="/avatar.jpg"
                          alt="avatar">
-                    <small class="text-muted"><span></span>名字</small>
+                    <small class="text-muted"><span th:text="${questionDTO.username}">名字</span></small>
                 </div>
             </div>
             <div class="row mt-4 d-grid justify-content-center">
@@ -174,11 +103,7 @@
         </div>
     </div>
 </section>
-<section th:fragment="footer" class="row">
-    <footer class="container align-bottom py-2 text-center font-monospace">
-        <small>Copyright © 2021 All Rights Reserved Powered By</small>
-    </footer>
-</section>
+<section th:replace="~{index::footer}"></section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>

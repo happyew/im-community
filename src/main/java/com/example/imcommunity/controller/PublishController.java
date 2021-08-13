@@ -81,8 +81,8 @@ public class PublishController {
             question.setTag(tag);
             question.setDescription(description);
             question.setGiteeUser(giteeUser);
-            questionService.save(question);
-            return "redirect:/";
+            Question questionSaved = questionService.save(question);
+            return "redirect:/question/" + questionSaved.getId();
         }
         return "redirect:/";
     }

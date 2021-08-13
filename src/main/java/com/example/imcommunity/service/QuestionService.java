@@ -17,4 +17,5 @@ public interface QuestionService {
 
     Question save(Question question);
 
+    QuestionDTO findById(Long id);
 }

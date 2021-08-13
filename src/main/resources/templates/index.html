@@ -48,7 +48,7 @@
         <div class="col-md-9 p-4 border-end">
             <div class="ms-4">
                 <h3 class="font-monospace">Discovery</h3>
-                <ul class="nav nav-tabs my-4">
+                <ul class="nav nav-tabs my-2">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">最新</a>
                     </li>
@@ -61,19 +61,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">消灭零回复</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
                 </ul>
-                <div th:if="not ${questionPageDTO==null}" class="container row">
+                <div th:if="not ${questionPageDTO==null}" class="row">
                     <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
-                         class="d-flex ms-2 mt-2 border-bottom">
+                         class="container d-flex mt-2 border-bottom">
                         <div class="flex-shrink-0">
                             <img th:src="*{avatarUrl}" width="55px" class="img-thumbnail" src="/avatar.jpg"
                                  alt="avatar">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a class="text-decoration-none" href="#">
+                            <a th:href="@{'/question/'+${question.id}}" class="text-decoration-none" href="#">
                                 <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                             </a>
                             <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
@@ -82,7 +79,6 @@
                                        th:text="${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></small>
                             </p>
                         </div>
-
                     </div>
                 </div>
                 <!--页码组件-->
