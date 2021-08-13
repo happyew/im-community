@@ -12,38 +12,7 @@
 </head>
 
 <body class="bg-light">
-<section th:replace="~{index::navbar}">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" aria-label="navi">
-        <div class="container-fluid">
-            <a class="navbar-brand ms-2" href="/">IM-Community</a>
-            <form class="me-auto ms-4 pe-4">
-                <input type="search" class="form-control font-monospace" placeholder="Search..."
-                       aria-label="Search">
-            </form>
-            <div th:unless="${isLogin}" class="navbar-nav">
-                <a class="nav-item nav-link"
-                   href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">通过Gitee登录</a>
-            </div>
-            <div th:if="${isLogin}" class="flex-shrink-0 dropdown ms-auto">
-                <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser2"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    <img th:src="${giteeUser.avatarUrl}" src="/avatar.jpg" alt="avatar" width="32" height="32"
-                         class="rounded-circle img-thumbnail">
-                </a>
-                <ul class="dropdown-menu text-small shadow dropdown-menu-dark dropdown-menu-end"
-                    aria-labelledby="dropdownUser2">
-                    <li><a class="dropdown-item" href="/publish">发起提问</a></li>
-                    <li><a class="dropdown-item" href="#">历史记录</a></li>
-                    <li><a class="dropdown-item" href="#">消息中心</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="/logout">退出登录</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</section>
+<section th:replace="~{index::navbar}"></section>
 <section class="bg-light my-4">
     <div class="container bg-white d-grid d-flow p-4">
         <div class="row">
@@ -117,11 +86,7 @@
         </div>
     </div>
 </section>
-<section th:replace="~{index::footer}" class="py-2 text-center font-monospace">
-    <footer class="container">
-        <small>Copyright © 2021 All Rights Reserved Powered By</small>
-    </footer>
-</section>
+<section th:replace="~{index::footer}" class="py-2 text-center font-monospace"></section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>

@@ -2,6 +2,7 @@ package com.example.imcommunity.service.impl;
 
 import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.dto.QuestionPageDTO;
+import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.entity.Question;
 import com.example.imcommunity.repository.QuestionRepository;
 import com.example.imcommunity.service.QuestionService;
@@ -25,17 +26,17 @@ public class QuestionServiceImpl implements QuestionService {
     public List<QuestionDTO> findAll() {
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         List<Question> questions = questionRepository.findAll();
-        for (Question question : questions) {
+        questions.forEach(question -> {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
             questionDTOS.add(questionDTO);
-        }
+        });
         return questionDTOS;
     }
 
     @Override
-    public QuestionPageDTO findPage(Integer page, Integer size) {
+    public QuestionPageDTO findAllPage(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Question> questions = questionRepository.findAll(pageable);
         if (questions.getContent().size() > 0) {
@@ -53,6 +54,26 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             return null;
         }
+    }
 
+    @Override
+    public QuestionPageDTO findPageByGiteeUser(Integer page, Integer size, GiteeUser giteeUser) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Question> questions = questionRepository.findByGiteeUser(giteeUser, pageable);
+        if (questions.getContent().size() > 0) {
+            PageUtil.PageDetail pageDetail = PageUtil.getPageDetail(questions, page);
+            QuestionPageDTO questionPageDTO = new QuestionPageDTO();
+            List<QuestionDTO> questionDTOList = questionPageDTO.getQuestionDTOList();
+            BeanUtils.copyProperties(pageDetail, questionPageDTO);
+            questions.getContent().forEach(question -> {
+                QuestionDTO questionDTO = new QuestionDTO();
+                BeanUtils.copyProperties(question, questionDTO);
+                questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
+                questionDTOList.add(questionDTO);
+            });
+            return questionPageDTO;
+        } else {
+            return null;
+        }
     }
 }

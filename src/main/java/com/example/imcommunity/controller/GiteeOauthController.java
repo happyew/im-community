@@ -1,7 +1,6 @@
 package com.example.imcommunity.controller;
 
 import com.example.imcommunity.dto.GiteeUserDTO;
-import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.provider.GiteeProvider;
 import com.example.imcommunity.repository.GiteeUserRepository;
@@ -41,7 +40,9 @@ public class GiteeOauthController {
      * @return 视图
      */
     @GetMapping("/login")
-    public String login(@RequestParam(name = "code") String code, HttpServletResponse response) {
+    public String login(@RequestParam(name = "code") String code,
+                        HttpServletRequest request,
+                        HttpServletResponse response) {
         GithubTokenDTO githubTokenDTO = new GithubTokenDTO();
         githubTokenDTO.setCode(code);
         githubTokenDTO.setClientId(clientId);
@@ -52,6 +53,7 @@ public class GiteeOauthController {
         if (user != null) {
             GiteeUser giteeUserExist = giteeUserRepository.findByAccountId(user.getId());
             if (giteeUserExist != null) {
+                request.getSession().setAttribute("user", giteeUserExist);
                 response.addCookie(new Cookie("token", giteeUserExist.getToken()));
                 return "redirect:/";
             }
@@ -64,6 +66,7 @@ public class GiteeOauthController {
             newGiteeUser.setGmt_modified(dateTime);
             GiteeUser giteeUserSaved = giteeUserRepository.save(newGiteeUser);
             if (giteeUserSaved.getAccountId() != null) {
+                request.getSession().setAttribute("user", giteeUserSaved);
                 response.addCookie(new Cookie("token", giteeUserSaved.getToken()));
                 return "redirect:/";
             }
@@ -84,6 +87,7 @@ public class GiteeOauthController {
         if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
+                    request.getSession().removeAttribute("user");
                     // 清除cookie里的token
                     response.addCookie(new Cookie("token", null));
                 }

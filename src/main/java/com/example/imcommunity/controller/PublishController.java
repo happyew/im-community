@@ -36,15 +36,16 @@ public class PublishController {
     @GetMapping("/publish")
     public String publish(Model model, HttpServletRequest request) {
         // 根据cookie验证是否登录
+        if (request.getSession().getAttribute("user") != null) {
+            return "publish";
+        }
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
+        if (cookies != null && cookies.length != 0) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     GiteeUser giteeUser = giteeUserRepository.findByToken(cookie.getValue());
                     if (giteeUser != null) {
-                        // 已登录
-                        model.addAttribute("giteeUser", giteeUser);
-                        model.addAttribute("isLogin", true);
+                        request.getSession().setAttribute("user", giteeUser);
                         return "publish";
                     }
                 }
@@ -69,6 +70,7 @@ public class PublishController {
                        @RequestParam(name = "tag", defaultValue = "") String tag,
                        HttpServletRequest request,
                        Model model) {
+
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);

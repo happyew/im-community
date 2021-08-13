@@ -1,6 +1,5 @@
 package com.example.imcommunity.provider;
 
-import com.example.imcommunity.dto.GithubTokenDTO;
 import com.example.imcommunity.dto.GiteeTokenDTO;
 import com.example.imcommunity.dto.GiteeUserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
