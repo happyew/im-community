@@ -12,7 +12,7 @@
 </head>
 
 <body class="bg-light">
-<section>
+<section th:replace="~{index::navbar}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" aria-label="navi">
         <div class="container-fluid">
             <a class="navbar-brand ms-2" href="/">IM-Community</a>
@@ -52,18 +52,18 @@
                 <form action="/publish" method="post">
                     <div class="mb-3">
                         <label for="title" class="form-label">问题标题（必填）:</label>
-                        <input th:value="${title}" name="title" type="text" class="form-control" id="title"
+                        <input th:value="${title}?${title}" name="title" type="text" class="form-control" id="title"
                                placeholder="问题标题...">
                     </div>
                     <div class="form-floating">
-                            <textarea th:text="${description}" name="description" class="form-control"
+                            <textarea th:text="${description}?${description}" name="description" class="form-control"
                                       placeholder="请输入问题描述..." id="description"
                                       style="height: 300px"></textarea>
                         <label for="description">请输入问题描述（必填）</label>
                     </div>
                     <div class="my-3">
                         <label for="tag" class="form-label">添加标签（必填）:</label>
-                        <input th:value="${tag}" name="tag" type="text" class="form-control" id="tag"
+                        <input th:value="${tag}?${tag}" name="tag" type="text" class="form-control" id="tag"
                                placeholder="输入标签，以逗号分隔...">
                     </div>
                     <ul class="nav nav-tabs my-2">
@@ -90,7 +90,7 @@
                     <div class="row mb-4 pb-4">
                         <div class="container col-md-8 col-sm-12 px-4">
                             <div th:if="not ${error==null}"
-                                 class="alert alert-danger alert-dismissible fade show mt-4 ps-4"
+                                 class="alert alert-danger alert-dismissible fade show mt-4 justify-content-center"
                                  role="alert">
                                 <strong th:text="${error}">标题不能为空</strong>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -117,7 +117,7 @@
         </div>
     </div>
 </section>
-<section class="py-2 text-center font-monospace">
+<section th:replace="~{index::footer}" class="py-2 text-center font-monospace">
     <footer class="container">
         <small>Copyright © 2021 All Rights Reserved Powered By</small>
     </footer>

@@ -12,7 +12,7 @@
 </head>
 
 <body class="bg-light">
-<section>
+<section th:fragment="navbar">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" aria-label="navi">
         <div class="container-fluid">
             <a class="navbar-brand ms-2" href="/">IM-Community</a>
@@ -45,8 +45,8 @@
     </nav>
 </section>
 <section class="bg-light container">
-    <div class="bg-white row">
-        <div class="col-md-9 p-4">
+    <div class="bg-white row mt-4 pb-4">
+        <div class="col-md-9 p-4 mt-4 border-end">
             <div>
                 <h3 class="px-2 pt-4 font-monospace">Discovery</h3>
                 <ul class="nav nav-tabs my-4">
@@ -66,38 +66,63 @@
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                     </li>
                 </ul>
-                <div th:if="not ${questionDTOS==null}" class="container row">
-                    <div th:each="question,index:${questionDTOS}" th:object="${question}" class="d-flex ms-2 mt-2 border-bottom">
+                <div th:if="not ${questionPageDTO==null}" class="container row">
+                    <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
+                         class="d-flex ms-2 mt-2 border-bottom">
                         <div class="flex-shrink-0">
                             <img th:src="*{avatarUrl}" width="55px" class="img-thumbnail" src="/avatar.jpg"
                                  alt="avatar">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a href="#">
+                            <a class="text-decoration-none" href="#">
                                 <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                             </a>
                             <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
                                 <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
-                                <small class="text-muted" th:text="${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}">2021-01-10 04:22</small></p>
+                                <small class="text-muted"
+                                       th:text="${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></small>
+                            </p>
                         </div>
 
                     </div>
                 </div>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination mb-0 pt-4 px-4">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
+                <!--页码组件-->
+                <nav th:if="not ${questionPageDTO==null}" th:object="${questionPageDTO}" aria-label="Page navigation">
+                    <ul class="pagination mb-0 mt-4 pt-4 px-4 d-flex justify-content-center">
+                        <!--上一页-->
+                        <li th:if="not ${questionPageDTO.previousNumber==-1}" class="page-item">
+                            <a th:href="@{/(page=${questionPageDTO.previousNumber})}" class="page-link" href="#"
+                               aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                        <!--<li th:unless="not ${questionPageDTO.previousNumber==-1}" class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <span aria-hidden="true">&laquo;</span></a>
+                        </li>-->
+                        <!--中间页-->
+                        <li th:each="index:${#numbers.sequence(questionPageDTO.startNumber,questionPageDTO.endNumber)}"
+                            th:class="${index==questionPageDTO.currentNumber}?'page-item active':'page-item'"
+                            data-th-aria-current="${index==questionPageDTO.currentNumber}?true"
+                            class="page-item active">
+                            <span th:if="${index==questionPageDTO.currentNumber}"
+                                  th:text="${index}"
+                                  class="page-link"></span>
+                            <a th:unless="${index==questionPageDTO.currentNumber}" th:href="@{/(page=${index})}"
+                               th:text="${index}"
+                               class="page-link" href="#"></a>
+                        </li>
+                        <!--下一页-->
+                        <li th:if="not ${questionPageDTO.nextNumber==-1}" class="page-item">
+                            <a th:href="@{/(page=${questionPageDTO.nextNumber})}" class="page-link" href="#"
+                               aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
+                        <!--<li th:unless="not ${questionPageDTO.nextNumber==-1}" class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <span aria-hidden="true">&raquo;</span></a>
+                        </li>-->
                     </ul>
                 </nav>
             </div>
@@ -113,7 +138,7 @@
         </div>
     </div>
 </section>
-<section class="row">
+<section th:fragment="footer" class="row">
     <footer class="container align-bottom py-2 text-center font-monospace">
         <small>Copyright © 2021 All Rights Reserved Powered By</small>
     </footer>
