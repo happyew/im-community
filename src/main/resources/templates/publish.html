@@ -87,8 +87,21 @@
                         <button type="button" class="btn btn-info btn-sm">Java</button>
                         <button type="button" class="btn btn-info btn-sm">Python</button>
                     </div>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end my-4">
-                        <button type="submit" class="btn btn-primary">提交</button>
+                    <div class="row mb-4 pb-4">
+                        <div class="container col-md-8 col-sm-12 px-4">
+                            <div th:if="not ${error==null}"
+                                 class="alert alert-danger alert-dismissible fade show mt-4 ps-4"
+                                 role="alert">
+                                <strong th:text="${error}">标题不能为空</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                        </div>
+                        <div class="container col-md-4 col-sm-12 mt-4">
+                            <div class="d-grid ms-auto gap-2 justify-content-md-end my-4">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -99,11 +112,7 @@
                     <li><small>问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料</small></li>
                     <li><small>选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字</small></li>
                 </ul>
-                <div th:if="not ${error==null}" class="alert alert-danger alert-dismissible fade show ae-auto mx-4 mt-4"
-                     role="alert">
-                    <strong th:text="${error}"></strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+
             </div>
         </div>
     </div>
