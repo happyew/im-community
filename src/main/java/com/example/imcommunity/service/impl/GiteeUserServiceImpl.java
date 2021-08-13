@@ -3,13 +3,15 @@ package com.example.imcommunity.service.impl;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.repository.GiteeUserRepository;
 import com.example.imcommunity.service.GiteeUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GiteeUserServiceImpl implements GiteeUserService {
-    @Autowired
-    private GiteeUserRepository giteeUserRepository;
+    private final GiteeUserRepository giteeUserRepository;
+
+    public GiteeUserServiceImpl(GiteeUserRepository giteeUserRepository) {
+        this.giteeUserRepository = giteeUserRepository;
+    }
 
     @Override
     public GiteeUser findByToken(String token) {

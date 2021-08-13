@@ -15,4 +15,8 @@ public class GiteeTokenDTO {
     private String refreshToken;
     private String scope;
     private String createAt;
+    private String code;
+    private String clientId;
+    private String clientSecret;
+    private String redirectUri;
 }

@@ -19,11 +19,11 @@
                 <input type="search" class="form-control font-monospace" placeholder="Search..."
                        aria-label="Search">
             </form>
-            <div th:unless="${session.user}" class="navbar-nav">
+            <div th:unless="not ${session.user==null}" class="navbar-nav">
                 <a class="nav-item nav-link"
                    href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">通过Gitee登录</a>
             </div>
-            <div th:if="${session.user}" th:object="${session.user}" class="flex-shrink-0 dropdown ms-auto">
+            <div th:if="not ${session.user==null}" th:object="${session.user}" class="flex-shrink-0 dropdown ms-auto">
                 <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser2"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <img th:src="*{avatarUrl}" src="/avatar.jpg" alt="avatar" width="32" height="32"
@@ -45,9 +45,9 @@
 </section>
 <section class="bg-light container">
     <div class="bg-white row mt-4 pb-4">
-        <div class="col-md-9 p-4 mt-4 border-end">
-            <div>
-                <h3 class="px-2 pt-4 font-monospace">Discovery</h3>
+        <div class="col-md-9 p-4 border-end">
+            <div class="ms-4">
+                <h3 class="font-monospace">Discovery</h3>
                 <ul class="nav nav-tabs my-4">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">最新</a>

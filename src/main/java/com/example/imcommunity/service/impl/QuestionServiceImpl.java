@@ -8,10 +8,10 @@ import com.example.imcommunity.repository.QuestionRepository;
 import com.example.imcommunity.service.QuestionService;
 import com.example.imcommunity.util.PageUtil;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,8 +19,11 @@ import java.util.List;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
+
+    public QuestionServiceImpl(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
 
     @Override
     public List<QuestionDTO> findAll() {
@@ -36,8 +39,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionPageDTO findAllPage(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public QuestionPageDTO findAllPage(Integer page, Integer size, Sort sort) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "gmtCreate");
         Page<Question> questions = questionRepository.findAll(pageable);
         if (questions.getContent().size() > 0) {
             PageUtil.PageDetail pageDetail = PageUtil.getPageDetail(questions, page);
@@ -57,8 +60,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionPageDTO findPageByGiteeUser(Integer page, Integer size, GiteeUser giteeUser) {
-        Pageable pageable = PageRequest.of(page - 1, size);
+    public QuestionPageDTO findPageByGiteeUser(Integer page, Integer size, Sort sort, GiteeUser giteeUser) {
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Question> questions = questionRepository.findByGiteeUser(giteeUser, pageable);
         if (questions.getContent().size() > 0) {
             PageUtil.PageDetail pageDetail = PageUtil.getPageDetail(questions, page);
@@ -75,5 +78,10 @@ public class QuestionServiceImpl implements QuestionService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Question save(Question question) {
+        return questionRepository.save(question);
     }
 }

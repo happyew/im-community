@@ -20,10 +20,10 @@ public class GiteeProvider {
     /**
      * 获取token
      *
-     * @param githubTokenDTO 包含gitee回调的code，和本应用相关数据
+     * @param giteeTokenDTO 包含gitee回调的code，和本应用相关数据
      * @return 字符串token
      */
-    public String getAccessToken(GithubTokenDTO githubTokenDTO) {
+    public String getAccessToken(GiteeTokenDTO giteeTokenDTO) {
         // 创建okhttp客户端
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
@@ -34,7 +34,7 @@ public class GiteeProvider {
         RequestBody body = null;
         try {
             // 转换成字符串json
-            String s = mapper.writeValueAsString(githubTokenDTO);
+            String s = mapper.writeValueAsString(giteeTokenDTO);
             // 设置请求体
             body = RequestBody.create(mediaType, s);
         } catch (JsonProcessingException e) {
@@ -50,9 +50,9 @@ public class GiteeProvider {
         try (Response response = client.newCall(request).execute()) {
             String string = Objects.requireNonNull(response.body()).string();
             // 把json封装成对象
-            GiteeTokenDTO giteeTokenDTO = mapper.readValue(string, GiteeTokenDTO.class);
+            GiteeTokenDTO giteeTokenDTO1 = mapper.readValue(string, GiteeTokenDTO.class);
             // 返回dto
-            return giteeTokenDTO.getAccessToken();
+            return giteeTokenDTO1.getAccessToken();
         } catch (IOException e) {
             e.printStackTrace();
         }
