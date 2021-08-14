@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Gitee登录控制器
@@ -63,6 +64,7 @@ public class GiteeOauthController {
             }
             GiteeUser newGiteeUser = new GiteeUser();
             Date dateTime = new Date();
+            newGiteeUser.setToken(UUID.fromString(user.getId()).toString());
             newGiteeUser.setAccountId(user.getId());
             newGiteeUser.setName(user.getName());
             newGiteeUser.setAvatarUrl(user.getAvatarUrl());

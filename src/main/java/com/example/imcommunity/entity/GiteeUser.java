@@ -24,7 +24,7 @@ public class GiteeUser {
     private String accountId;
     private String name;
     @Column(unique = true)
-    private String token = UUID.randomUUID().toString();
+    private String token;
     private String avatarUrl;
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
