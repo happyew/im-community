@@ -22,6 +22,7 @@
             </form>
             <div th:unless="${session.user!=null}" class="navbar-nav">
                 <a class="nav-item nav-link"
+                   th:href="'https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri='+${@environment.getProperty('gitee.redirect.uri')}+'&response_type=code'"
                    href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">通过Gitee登录</a>
             </div>
             <div th:if="${session.user!=null}" th:object="${session.user}" class="flex-shrink-0 dropdown ms-auto">
@@ -45,7 +46,7 @@
     </nav>
 </section>
 <section class="bg-light container">
-    <div class="bg-white row mt-4 pb-4">
+    <div class="bg-white row mt-4 py-4">
         <div class="col-md-9 p-4 border-end">
             <div class="ms-4">
                 <h3 class="font-monospace"><i class="bi bi-search me-3"></i>Discovery</h3>
@@ -63,7 +64,7 @@
                         <a class="nav-link" href="#">消灭零回复</a>
                     </li>
                 </ul>
-                <div th:if="${questionPageDTO!=null}" class="row">
+                <div th:if="${questionPageDTO!=null&&questionPageDTO.questionDTOList.size()>0}" class="row">
                     <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
                          class="container d-flex mt-2 border-bottom">
                         <div class="flex-shrink-0">
@@ -77,9 +78,9 @@
                             <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
                                 <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
                                 <small class="text-muted"
-                                       th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}+'发布'"></small>
+                                       th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}+'发布'"></small>
                                 <small th:if="${question.gmtCreate!=question.gmtModified}" class="text-muted"
-                                       th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}+'编辑'"></small>
+                                       th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm')}+'编辑'"></small>
                             </p>
                         </div>
                     </div>
@@ -138,7 +139,7 @@
 </section>
 <section th:fragment="footer" class="row">
     <footer class="container align-bottom py-2 text-center font-monospace">
-        <small>Copyright © 2021 All Rights Reserved Powered By</small>
+        <small>Copyright © 2021 All Rights Reserved Powered By only for technology test.</small>
     </footer>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"

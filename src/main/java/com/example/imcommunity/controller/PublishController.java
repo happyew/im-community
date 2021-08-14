@@ -3,6 +3,8 @@ package com.example.imcommunity.controller;
 import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.entity.Question;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.service.QuestionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
@@ -105,7 +107,7 @@ public class PublishController {
             Question questionSaved = questionService.save(question);
             return "redirect:/question/" + questionSaved.getId();
         }
-        return "redirect:/";
+        throw new CustomException(CustomErrorCode.NOT_LOGIN);
     }
 
     /**
@@ -129,6 +131,6 @@ public class PublishController {
                 return "publish";
             }
         }
-        return "redirect:/question/" + id;
+        throw new CustomException(CustomErrorCode.NOT_LOGIN);
     }
 }

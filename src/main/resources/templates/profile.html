@@ -19,12 +19,12 @@
         <div class="col-md-9 p-4 mt-4 border-end">
             <div class="row border-bottom">
                 <div class="container mb-1 ms-4">
-                        <h3><i class="bi bi-list me-2"></i>我的提问</h3>
+                    <h3><i class="bi bi-list me-2"></i>我的提问</h3>
                 </div>
             </div>
             <div class="row">
                 <div class="container">
-                    <div th:if="${questionPageDTO!=null}" class="container">
+                    <div th:if="${questionPageDTO!=null&&questionPageDTO.questionDTOList.size()>0}" class="container">
                         <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
                              class="d-flex ms-2 mt-2 border-bottom">
                             <!--<div class="flex-shrink-0">
@@ -38,9 +38,9 @@
                                 <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
                                     <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
                                     <small class="text-muted"
-                                           th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}+'发布'"></small>
+                                           th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}+'发布'"></small>
                                     <small th:if="${question.gmtCreate!=question.gmtModified}" class="text-muted"
-                                           th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}+'编辑'"></small>
+                                           th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm')}+'编辑'"></small>
                                 </p>
                             </div>
 
@@ -50,12 +50,13 @@
             </div>
             <div class="row">
                 <div class="container">
-                    <nav th:if="${questionPageDTO!=null}" th:object="${questionPageDTO}"
+                    <nav th:if="${questionPageDTO!=null&&questionPageDTO.questionDTOList.size()>0}" th:object="${questionPageDTO}"
                          aria-label="Page navigation">
                         <ul class="pagination mb-0 mt-4 pt-4 px-4 d-flex justify-content-center">
                             <!--上一页-->
                             <li th:if="${questionPageDTO.previousNumber!=-1}" class="page-item">
-                                <a th:href="@{/profile/question(page=${questionPageDTO.previousNumber})}" class="page-link" href="#"
+                                <a th:href="@{/profile/question(page=${questionPageDTO.previousNumber})}"
+                                   class="page-link" href="#"
                                    aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
@@ -71,12 +72,14 @@
                                 class="page-item active">
                                     <span th:if="${index==questionPageDTO.currentNumber}" th:text="${index}"
                                           class="page-link"></span>
-                                <a th:unless="${index==questionPageDTO.currentNumber}" th:href="@{/profile/question(page=${index})}"
+                                <a th:unless="${index==questionPageDTO.currentNumber}"
+                                   th:href="@{/profile/question(page=${index})}"
                                    th:text="${index}" class="page-link" href="#"></a>
                             </li>
                             <!--下一页-->
                             <li th:if="${questionPageDTO.nextNumber!=-1}" class="page-item">
-                                <a th:href="@{/profile/question(page=${questionPageDTO.nextNumber})}" class="page-link" href="#"
+                                <a th:href="@{/profile/question(page=${questionPageDTO.nextNumber})}" class="page-link"
+                                   href="#"
                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
@@ -92,7 +95,7 @@
         </div>
         <div class="col-md-3 p-4 mt-4">
             <div class="container row pt-4">
-                <div th:if="not ${questionPageDTO==null}" class="btn-group-vertical">
+                <div th:if="${questionPageDTO!=null}" class="btn-group-vertical">
                     <button type="button" class="btn btn-primary active" aria-pressed="true">
                         我的提问 <span class="badge badge-light"></span>
                     </button>
@@ -100,7 +103,7 @@
                         最新回复 <span class="badge badge-light"></span>
                     </button>
                 </div>
-                <div th:unless="not ${questionPageDTO==null}" class="btn-group-vertical">
+                <div th:unless="${questionPageDTO!=null}" class="btn-group-vertical">
                     <button type="button" class="btn btn-primary">
                         我的提问 <span class="badge badge-light"></span>
                     </button>

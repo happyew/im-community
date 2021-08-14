@@ -63,4 +63,6 @@ public interface QuestionService {
      * @return 问题
      */
     Question findQuestionById(Long id);
+
+    void viewIncrement(Long id);
 }

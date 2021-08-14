@@ -23,7 +23,6 @@ public class GiteeUser {
     private Long id;
     private String accountId;
     private String name;
-    @Column(unique = true)
     private String token;
     private String avatarUrl;
     @CreatedDate

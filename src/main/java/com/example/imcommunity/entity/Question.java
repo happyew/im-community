@@ -7,7 +7,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,6 +39,9 @@ public class Question {
     @ManyToOne(targetEntity = GiteeUser.class, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "gitee_user_id", referencedColumnName = "id")
     private GiteeUser giteeUser;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Comment> comments = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,11 @@
 package com.example.imcommunity.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.example.imcommunity.dto.GiteeTokenDTO;
 import com.example.imcommunity.dto.GiteeUserDTO;
 import com.example.imcommunity.entity.GiteeUser;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.provider.GiteeProvider;
 import com.example.imcommunity.service.GiteeUserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +17,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Gitee登录控制器
@@ -62,7 +64,7 @@ public class GiteeOauthController {
             }
             GiteeUser newGiteeUser = new GiteeUser();
             Date dateTime = new Date();
-            newGiteeUser.setToken(UUID.fromString(user.getId()).toString());
+            newGiteeUser.setToken(IdUtil.randomUUID());
             newGiteeUser.setAccountId(user.getId());
             newGiteeUser.setName(user.getName());
             newGiteeUser.setAvatarUrl(user.getAvatarUrl());
@@ -75,7 +77,7 @@ public class GiteeOauthController {
                 return "redirect:/";
             }
         }
-        return "loginFailed";
+        throw new CustomException(CustomErrorCode.LOGIN_FAILED);
     }
 
     /**

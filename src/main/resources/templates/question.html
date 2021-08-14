@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>首页 - IM社区</title>
+    <title th:text="${questionDTO.title}+' - IM社区'">IM社区</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
@@ -21,9 +21,9 @@
                     <h4 th:text="${questionDTO.title}">Lorem ipsum dolor sit amet consectetur.</h4>
                     <small class="text-muted me-3">作者:&nbsp;<span th:text="${questionDTO.username}"></span></small>
                     <small class="text-muted me-3">发布时间:&nbsp;
-                        <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span></small>
+                        <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></small>
                     <small th:if="${questionDTO.gmtCreate!=questionDTO.gmtModified}" class="text-muted me-3">最后编辑:&nbsp;
-                        <span th:text="${#dates.format(questionDTO.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></span></small>
+                        <span th:text="${#dates.format(questionDTO.gmtModified,'yyyy-MM-dd HH:mm')}"></span></small>
                     <small class="text-muted me-3">浏览数:&nbsp;<span th:text="${questionDTO.viewCount}"></span></small>
                 </div>
             </div>

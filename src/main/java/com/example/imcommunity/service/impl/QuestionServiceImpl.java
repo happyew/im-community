@@ -4,6 +4,8 @@ import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.dto.QuestionPageDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.entity.Question;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.repository.QuestionRepository;
 import com.example.imcommunity.service.QuestionService;
 import com.example.imcommunity.util.PageUtil;
@@ -30,13 +32,16 @@ public class QuestionServiceImpl implements QuestionService {
     public List<QuestionDTO> findAll() {
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         List<Question> questions = questionRepository.findAll();
-        questions.forEach(question -> {
-            QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question, questionDTO);
-            questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
-            questionDTOS.add(questionDTO);
-        });
-        return questionDTOS;
+        if (questions.size() > 0) {
+            questions.forEach(question -> {
+                QuestionDTO questionDTO = new QuestionDTO();
+                BeanUtils.copyProperties(question, questionDTO);
+                questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
+                questionDTOS.add(questionDTO);
+            });
+            return questionDTOS;
+        }
+        return null;
     }
 
     @Override
@@ -55,9 +60,8 @@ public class QuestionServiceImpl implements QuestionService {
                 questionDTOList.add(questionDTO);
             });
             return questionPageDTO;
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -97,11 +101,27 @@ public class QuestionServiceImpl implements QuestionService {
             questionDTO.setUserid(question.getGiteeUser().getId());
             return questionDTO;
         }
-        return null;
+        throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
     }
 
     @Override
     public Question findQuestionById(Long id) {
-        return questionRepository.findById(id).orElse(null);
+        Optional<Question> optionalQuestion = questionRepository.findById(id);
+        if (optionalQuestion.isPresent()) {
+            return optionalQuestion.get();
+        }
+        throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
+    }
+
+    @Override
+    public void viewIncrement(Long id) {
+        Optional<Question> questionOptional = questionRepository.findById(id);
+        if (questionOptional.isPresent()) {
+            Question question = questionOptional.get();
+            question.setViewCount(question.getViewCount() + 1);
+            questionRepository.save(question);
+        } else {
+            throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
+        }
     }
 }

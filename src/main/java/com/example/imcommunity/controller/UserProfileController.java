@@ -2,6 +2,8 @@ package com.example.imcommunity.controller;
 
 import com.example.imcommunity.dto.QuestionPageDTO;
 import com.example.imcommunity.entity.GiteeUser;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.service.QuestionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Sort;
@@ -46,6 +48,6 @@ public class UserProfileController {
             request.getSession().setAttribute("user", giteeUser);
             return "profile";
         }
-        return "redirect:/";
+        throw new CustomException(CustomErrorCode.NOT_LOGIN);
     }
 }

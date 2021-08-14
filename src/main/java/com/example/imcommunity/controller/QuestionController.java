@@ -1,6 +1,8 @@
 package com.example.imcommunity.controller;
 
 import com.example.imcommunity.dto.QuestionDTO;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.service.QuestionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String show(@PathVariable Long id,
                        @NotNull Model model) {
+        // 增加浏览数
+        questionService.viewIncrement(id);
         QuestionDTO questionDTO = questionService.findQuestionDTOById(id);
         model.addAttribute("questionDTO", questionDTO);
         return "question";
