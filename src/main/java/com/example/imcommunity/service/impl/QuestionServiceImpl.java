@@ -41,7 +41,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionPageDTO findAllPage(Integer page, Integer size, Sort sort) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "gmtCreate");
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Question> questions = questionRepository.findAll(pageable);
         if (questions.getContent().size() > 0) {
             PageUtil.PageDetail pageDetail = PageUtil.getPageDetail(questions, page);

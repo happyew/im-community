@@ -18,13 +18,13 @@
         <div class="col-md-9 p-4 mt-4 border-end">
             <div class="row border-bottom">
                 <div class="container ms-2 pb-4 me-4">
-                    <h4>Lorem ipsum dolor sit amet consectetur.</h4>
-                    <small class="text-muted me-3">作者：<span th:text="${questionDTO.username}"></span></small>
-                    <small class="text-muted me-3">发布时间：
+                    <h4 th:text="${questionDTO.title}">Lorem ipsum dolor sit amet consectetur.</h4>
+                    <small class="text-muted me-3">作者:&nbsp;<span th:text="${questionDTO.username}"></span></small>
+                    <small class="text-muted me-3">发布时间:&nbsp;
                         <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span></small>
-                    <small class="text-muted me-3">最后修改：
+                    <small th:if="${questionDTO.gmtCreate!=questionDTO.gmtModified}" class="text-muted me-3">最后编辑:&nbsp;
                         <span th:text="${#dates.format(questionDTO.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></span></small>
-                    <small class="text-muted me-3">浏览数：<span th:text="${questionDTO.viewCount}"></span></small>
+                    <small class="text-muted me-3">浏览数:&nbsp;<span th:text="${questionDTO.viewCount}"></span></small>
                 </div>
             </div>
             <div class="row">
@@ -42,7 +42,8 @@
             <div th:if="${session.user!=null && questionDTO.userid==session.user.id}" class="row">
                 <div class="d-flow p-2 border-bottom">
                     <div class=" float-end">
-                        <a th:href="@{'/publish/'+${questionDTO.id}}" href="#">编辑</a> <i class="bi bi-pencil-square"></i>
+                        <a th:href="@{'/publish/'+${questionDTO.id}}" href="#">编辑</a> <i
+                            class="bi bi-pencil-square"></i>
                     </div>
                 </div>
             </div>

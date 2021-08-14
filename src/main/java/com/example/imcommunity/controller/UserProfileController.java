@@ -39,6 +39,7 @@ public class UserProfileController {
                           Model model) {
         GiteeUser giteeUser = (GiteeUser) request.getSession().getAttribute("user");
         if (giteeUser != null) {
+            // 按修改时间倒序显示
             Sort sort = Sort.by(Sort.Direction.DESC, "gmtModified");
             QuestionPageDTO questionPageDTO = questionService.findPageByGiteeUser(page, size, sort, giteeUser);
             model.addAttribute("questionPageDTO", questionPageDTO);

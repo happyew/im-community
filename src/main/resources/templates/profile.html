@@ -38,7 +38,9 @@
                                 <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
                                     <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
                                     <small class="text-muted"
-                                           th:text="${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></small>
+                                           th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm:ss')}+'发布'"></small>
+                                    <small th:if="${question.gmtCreate!=question.gmtModified}" class="text-muted"
+                                           th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm:ss')}+'编辑'"></small>
                                 </p>
                             </div>
 
