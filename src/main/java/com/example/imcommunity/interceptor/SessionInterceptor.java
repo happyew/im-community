@@ -11,6 +11,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 配置拦截器
+ */
 @Component
 public class SessionInterceptor implements HandlerInterceptor {
     private final GiteeUserService giteeUserService;
