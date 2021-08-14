@@ -18,21 +18,22 @@
         <div class="row">
             <div class="container col-md-8 border-end">
                 <h4><i class="bi bi-plus-square-dotted me-2"></i>发起提问</h4>
-                <form th:action="${questionDTO.id!=null}?'/question/'+${questionDTO.id}:'/publish'" action="/publish" method="post">
+                <form action="/publish" method="post">
+                    <input th:if="${questionDTO!=null && questionDTO.id!=null}" th:value="${questionDTO.id}" name="id" type="hidden">
                     <div class="mb-3">
                         <label for="title" class="form-label">问题标题（必填）:</label>
-                        <input th:value="${questionDTO.title}?${questionDTO.title}" name="title" type="text" class="form-control" id="title"
+                        <input th:value="${questionDTO!=null && questionDTO.title!=null} ? ${questionDTO.title}" name="title" type="text" class="form-control" id="title"
                                placeholder="问题标题...">
                     </div>
                     <div class="form-floating">
-                            <textarea th:text="${questionDTO.description}?${questionDTO.description}" name="description" class="form-control"
+                            <textarea th:text="${questionDTO!=null && questionDTO.description!=null}?${questionDTO.description}" name="description" class="form-control"
                                       placeholder="请输入问题描述..." id="description"
                                       style="height: 300px"></textarea>
                         <label for="description">请输入问题描述（必填）</label>
                     </div>
                     <div class="my-3">
                         <label for="tag" class="form-label">添加标签（必填）:</label>
-                        <input th:value="${questionDTO.tag}?${questionDTO.tag}" name="tag" type="text" class="form-control" id="tag"
+                        <input th:value="${questionDTO!=null && questionDTO.tag!=null}?${questionDTO.tag}" name="tag" type="text" class="form-control" id="tag"
                                placeholder="输入标签，以逗号分隔...">
                     </div>
                     <ul class="nav nav-tabs my-2">

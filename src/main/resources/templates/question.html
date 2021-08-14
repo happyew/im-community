@@ -22,6 +22,8 @@
                     <small class="text-muted me-3">作者：<span th:text="${questionDTO.username}"></span></small>
                     <small class="text-muted me-3">发布时间：
                         <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm:ss')}"></span></small>
+                    <small class="text-muted me-3">最后修改：
+                        <span th:text="${#dates.format(questionDTO.gmtModified,'yyyy-MM-dd HH:mm:ss')}"></span></small>
                     <small class="text-muted me-3">浏览数：<span th:text="${questionDTO.viewCount}"></span></small>
                 </div>
             </div>
@@ -40,7 +42,7 @@
             <div th:if="${session.user!=null && questionDTO.userid==session.user.id}" class="row">
                 <div class="d-flow p-2 border-bottom">
                     <div class=" float-end">
-                        <a th:href="@{'/question/'+${questionDTO.id}+'/edit'}" href="#">编辑</a> <i class="bi bi-pencil-square"></i>
+                        <a th:href="@{'/publish/'+${questionDTO.id}}" href="#">编辑</a> <i class="bi bi-pencil-square"></i>
                     </div>
                 </div>
             </div>

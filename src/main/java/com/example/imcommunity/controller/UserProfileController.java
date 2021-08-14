@@ -3,6 +3,7 @@ package com.example.imcommunity.controller;
 import com.example.imcommunity.dto.QuestionPageDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.service.QuestionService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +35,8 @@ public class UserProfileController {
     @GetMapping("/profile/question")
     public String profile(@RequestParam(name = "page", defaultValue = "1") Integer page,
                           @RequestParam(name = "size", defaultValue = "5") Integer size,
-                          HttpServletRequest request, Model model) {
+                          @NotNull HttpServletRequest request,
+                          Model model) {
         GiteeUser giteeUser = (GiteeUser) request.getSession().getAttribute("user");
         if (giteeUser != null) {
             Sort sort = Sort.by(Sort.Direction.DESC, "gmtModified");
