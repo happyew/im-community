@@ -17,4 +17,14 @@ public class GiteeUserServiceImpl implements GiteeUserService {
     public GiteeUser findByToken(String token) {
         return giteeUserRepository.findByToken(token);
     }
+
+    @Override
+    public GiteeUser findByAccountId(String accountId) {
+        return giteeUserRepository.findByAccountId(accountId);
+    }
+
+    @Override
+    public GiteeUser save(GiteeUser giteeUser) {
+        return giteeUserRepository.save(giteeUser);
+    }
 }

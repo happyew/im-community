@@ -13,4 +13,20 @@ public interface GiteeUserService {
      * @return Gitee用户
      */
     GiteeUser findByToken(String token);
+
+    /**
+     * 根据accountId查询Gitee用户
+     *
+     * @param accountId accountId
+     * @return Gitee用户
+     */
+    GiteeUser findByAccountId(String accountId);
+
+    /**
+     * 保存用户
+     *
+     * @param giteeUser Gitee用户
+     * @return Gitee用户
+     */
+    GiteeUser save(GiteeUser giteeUser);
 }

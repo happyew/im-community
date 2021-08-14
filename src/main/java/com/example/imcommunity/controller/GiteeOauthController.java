@@ -5,6 +5,7 @@ import com.example.imcommunity.dto.GiteeUserDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.provider.GiteeProvider;
 import com.example.imcommunity.repository.GiteeUserRepository;
+import com.example.imcommunity.service.GiteeUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,16 +22,19 @@ import java.util.Date;
  */
 @Controller
 public class GiteeOauthController {
-    @Autowired
-    private GiteeProvider giteeProvider;
-    @Autowired
-    private GiteeUserRepository giteeUserRepository;
+    private final GiteeProvider giteeProvider;
+    private final GiteeUserService giteeUserService;
     @Value("${gitee.client.id}")
     private String clientId;
     @Value("${gitee.client.secret}")
     private String clientSecret;
     @Value("${gitee.redirect.uri}")
     private String redirectUri;
+
+    public GiteeOauthController(GiteeProvider giteeProvider, GiteeUserService giteeUserService) {
+        this.giteeProvider = giteeProvider;
+        this.giteeUserService = giteeUserService;
+    }
 
     /**
      * 登录
@@ -51,7 +55,7 @@ public class GiteeOauthController {
         String accessToken = giteeProvider.getAccessToken(giteeTokenDTO);
         GiteeUserDTO user = giteeProvider.getUser(accessToken);
         if (user != null) {
-            GiteeUser giteeUserExist = giteeUserRepository.findByAccountId(user.getId());
+            GiteeUser giteeUserExist = giteeUserService.findByAccountId(user.getId());
             if (giteeUserExist != null) {
                 request.getSession().setAttribute("user", giteeUserExist);
                 response.addCookie(new Cookie("token", giteeUserExist.getToken()));
@@ -64,7 +68,7 @@ public class GiteeOauthController {
             newGiteeUser.setAvatarUrl(user.getAvatarUrl());
             newGiteeUser.setGmt_create(dateTime);
             newGiteeUser.setGmt_modified(dateTime);
-            GiteeUser giteeUserSaved = giteeUserRepository.save(newGiteeUser);
+            GiteeUser giteeUserSaved = giteeUserService.save(newGiteeUser);
             if (giteeUserSaved.getAccountId() != null) {
                 request.getSession().setAttribute("user", giteeUserSaved);
                 response.addCookie(new Cookie("token", giteeUserSaved.getToken()));
