@@ -76,9 +76,8 @@ public class QuestionServiceImpl implements QuestionService {
                 questionDTOList.add(questionDTO);
             });
             return questionPageDTO;
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -87,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDTO findById(Long id) {
+    public QuestionDTO findQuestionDTOById(Long id) {
         Optional<Question> optional = questionRepository.findById(id);
         if (optional.isPresent()) {
             Question question = optional.get();
@@ -95,8 +94,14 @@ public class QuestionServiceImpl implements QuestionService {
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
             questionDTO.setUsername(question.getGiteeUser().getName());
+            questionDTO.setUserid(question.getGiteeUser().getId());
             return questionDTO;
         }
         return null;
+    }
+
+    @Override
+    public Question findQuestionById(Long id) {
+        return questionRepository.findById(id).orElse(null);
     }
 }

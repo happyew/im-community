@@ -19,4 +19,5 @@ public class QuestionDTO {
     private Long likeCount;
     private String avatarUrl;
     private String username;
+    private Long userid;
 }

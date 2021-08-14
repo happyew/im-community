@@ -8,6 +8,7 @@
     <title>首页 - IM社区</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
 <body class="bg-light">
@@ -26,7 +27,7 @@
             </div>
             <div class="row">
                 <div class="container p-4 border-bottom">
-                    <p th:text="${questionDTO.description}"></p>
+                    <p class="fw-light" th:text="${questionDTO.description}"></p>
                 </div>
             </div>
             <div class="row">
@@ -34,6 +35,13 @@
                     <button type="button" class="btn btn-primary btn-sm">Java</button>
                     <button type="button" class="btn btn-primary btn-sm">Python</button>
                     <button type="button" class="btn btn-primary btn-sm">Linux</button>
+                </div>
+            </div>
+            <div th:if="${session.user!=null && questionDTO.userid==session.user.id}" class="row">
+                <div class="d-flow p-2 border-bottom">
+                    <div class=" float-end">
+                        <a th:href="@{'/question/'+${questionDTO.id}+'/edit'}" href="#">编辑</a> <i class="bi bi-pencil-square"></i>
+                    </div>
                 </div>
             </div>
             <div class="row">

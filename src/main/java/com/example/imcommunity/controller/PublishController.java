@@ -1,5 +1,6 @@
 package com.example.imcommunity.controller;
 
+import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.entity.Question;
 import com.example.imcommunity.service.QuestionService;
@@ -59,9 +60,11 @@ public class PublishController {
         // 验证是否登录
         GiteeUser giteeUser = (GiteeUser) request.getSession().getAttribute("user");
         if (giteeUser != null) {
-            model.addAttribute("title", title);
-            model.addAttribute("description", description);
-            model.addAttribute("tag", tag);
+            QuestionDTO questionDTO = new QuestionDTO();
+            questionDTO.setTitle(title);
+            questionDTO.setDescription(description);
+            questionDTO.setTag(tag);
+            model.addAttribute("questionDTO", questionDTO);
             if ("".equals(title)) {
                 model.addAttribute("error", "标题不能为空！");
                 return "publish";
