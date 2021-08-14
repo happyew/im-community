@@ -3,6 +3,9 @@ package com.example.imcommunity.util;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
+/**
+ * 分页工具类
+ */
 public class PageUtil {
     public static <T> PageDetail getPageDetail(Page<T> currentPage, int currentIndex) {
         PageDetail pageDetail = new PageDetail();
