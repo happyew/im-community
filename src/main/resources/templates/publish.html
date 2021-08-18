@@ -19,6 +19,7 @@
             <div class="container col-md-8 border-end">
                 <h4><i class="bi bi-plus-square-dotted me-2"></i>发起提问</h4>
                 <form action="/publish" method="post">
+                    <input type="hidden" name="userId" th:value="${session.user.id}">
                     <input th:if="${questionDTO!=null && questionDTO.id!=null}" th:value="${questionDTO.id}" name="id" type="hidden">
                     <div class="mb-3">
                         <label for="title" class="form-label">问题标题（必填）:</label>
@@ -36,7 +37,7 @@
                         <input th:value="${questionDTO!=null && questionDTO.tag!=null}?${questionDTO.tag}" name="tag" type="text" class="form-control" id="tag"
                                placeholder="输入标签，以逗号分隔...">
                     </div>
-                    <ul class="nav nav-tabs my-2">
+                    <!--<ul class="nav nav-tabs my-2">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">编程语言</a>
                         </li>
@@ -56,7 +57,7 @@
                     <div>
                         <button type="button" class="btn btn-info btn-sm">Java</button>
                         <button type="button" class="btn btn-info btn-sm">Python</button>
-                    </div>
+                    </div>-->
                     <div class="row mb-4 pb-4">
                         <div class="container col-md-8 col-sm-12 px-4">
                             <div th:if="${error!=null}"

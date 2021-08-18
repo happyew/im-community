@@ -35,11 +35,11 @@
                                 <a th:href="@{'/question/'+${question.id}}" class="text-decoration-none" href="#">
                                     <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                                 </a>
-                                <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
+                                <p><small class="text-muted"><span th:text="${question.comments.size()}"></span>个回复 · </small>
                                     <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
                                     <small class="text-muted"
-                                           th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}+'发布'"></small>
-                                    <small th:if="${question.gmtCreate!=question.gmtModified}" class="text-muted"
+                                           th:text="${#dates.format(question.gmtCreated,'yyyy-MM-dd HH:mm')}+'发布'"></small>
+                                    <small th:if="${question.gmtCreated!=question.gmtModified}" class="text-muted"
                                            th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm')}+'编辑'"></small>
                                 </p>
                             </div>

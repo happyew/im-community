@@ -21,8 +21,8 @@
                     <h4 th:text="${questionDTO.title}">Lorem ipsum dolor sit amet consectetur.</h4>
                     <small class="text-muted me-3">作者:&nbsp;<span th:text="${questionDTO.username}"></span></small>
                     <small class="text-muted me-3">发布时间:&nbsp;
-                        <span th:text="${#dates.format(questionDTO.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></small>
-                    <small th:if="${questionDTO.gmtCreate!=questionDTO.gmtModified}" class="text-muted me-3">最后编辑:&nbsp;
+                        <span th:text="${#dates.format(questionDTO.gmtCreated,'yyyy-MM-dd HH:mm')}"></span></small>
+                    <small th:if="${questionDTO.gmtCreated!=questionDTO.gmtModified}" class="text-muted me-3">最后编辑:&nbsp;
                         <span th:text="${#dates.format(questionDTO.gmtModified,'yyyy-MM-dd HH:mm')}"></span></small>
                     <small class="text-muted me-3">浏览数:&nbsp;<span th:text="${questionDTO.viewCount}"></span></small>
                 </div>
@@ -47,47 +47,55 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div th:if="${questionDTO.comments.size()>0}" class="row">
                 <div class="container pt-4 px-4">
-                    <h5 class="border-bottom pb-2"><span>0</span>个回复</h5>
+                    <h5 class="border-bottom pb-2"><span th:text="${questionDTO.comments.size()}"></span>个回复</h5>
                 </div>
             </div>
-            <!--<div class="row">
-                <div th:if="not ${questionDTO==null}" class="container px-4">
-                    <div th:each="question,index:${questionDTO}" th:object="${question}"
+            <div th:if="${questionDTO.comments.size()>0}" class="row">
+                <div class="container px-4">
+                    <div th:each="comment,index:${questionDTO.comments}"
                          class="d-flex ms-2 mt-2 border-bottom">
                         <div class="flex-shrink-0">
-                            <img th:src="*{avatarUrl}" width="50px" class="img-thumbnail" src="/avatar.jpg"
+                            <img th:src="${questionDTO.avatarUrl!=null}?${questionDTO.avatarUrl}:'/img/avatar.jpg'"
+                                 width="50px" class="img-thumbnail" src="/avatar.jpg"
                                  alt="avatar">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <small class="text-muted"><span th:text="*{commentCount}"></span>名字</small>
-                            <p class="mt-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque,
-                                consequatur. Lorem ipsum dolor sit amet. Lorem, ipsum dolor sit amet consectetur
-                                adipisicing elit. Voluptate, doloremque!</p>
+                            <small class="text-muted"><span th:text="${comment.user.username}"></span></small>
+                            <p class="mt-2" th:text="${comment.content}"></p>
                         </div>
                     </div>
                 </div>
-            </div>-->
-            <div class="row">
+            </div>
+            <div th:if="${session.user!=null}" class="row">
                 <div class="container mt-4 px-4 border-bottom">
                     <h5>提交回复</h5>
                 </div>
             </div>
-            <div class="row">
+            <div th:if="${session.user!=null}" class="row">
                 <div class="container px-4 pt-2">
                     <div class="flex-shrink-0">
-                        <img th:src="${questionDTO.avatarUrl}" width="45px" class="img-thumbnail me-2" src="/avatar.jpg"
+                        <img th:src="${session.user.avatarUrl!=null}?${session.user.avatarUrl}:'/img/avatar.jpg'"
+                             width="45px" class="img-thumbnail me-2" src="/avatar.jpg"
                              alt="avatar">
-                        <small class="text-muted"><span th:text="${questionDTO.username}">用户名</span></small>
+                        <small class="text-muted"><span th:text="${session.user.username}">用户名</span></small>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="container pt-2 px-4">
-                    <form action="./" method="POST" class="form-floating justify-content-center">
-                            <textarea class="form-control" placeholder="请输入回复" name="content" id="content"
-                                      style="height: 125px"></textarea>
+                <div th:unless="${session.user!=null}" class="container pt-2 px-4">
+                    <div class="alert alert-info" role="alert">
+                        <a href="/login" class="alert-link">登录</a>后可回复
+                    </div>
+                </div>
+                <div th:if="${session.user!=null}" class="container pt-2 px-4">
+                    <form th:action="'/question/'+${questionDTO.id}+'/comment'" action="comment" method="POST"
+                          class="form-floating justify-content-center">
+                        <input name="userId" type="hidden" th:value="${session.user.id}">
+                        <input name="questionId" type="hidden" th:value="${questionDTO.id}">
+                        <textarea class="form-control" placeholder="请输入回复" name="content" id="content"
+                                  style="height: 125px"></textarea>
                         <label for="content">回复</label>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
                             <button type="submit" class="btn btn-primary">提交</button>
@@ -100,7 +108,8 @@
             <div class="container row ms-1 py-4 border-bottom">
                 <h5>发起人</h5>
                 <div class="flex-shrink-0 mt-1">
-                    <img th:src="${questionDTO.avatarUrl}" width="50px" class="img-thumbnail me-2" src="/avatar.jpg"
+                    <img th:src="${questionDTO.avatarUrl!=null}?${questionDTO.avatarUrl}:'/img/avatar.jpg'" width="50px"
+                         class="img-thumbnail me-2" src="/avatar.jpg"
                          alt="avatar">
                     <small class="text-muted"><span th:text="${questionDTO.username}">名字</span></small>
                 </div>

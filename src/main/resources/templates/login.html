@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<h1>登录</h1>
+<form action="/login" method="post">
+    <label>用户名
+        <input name="username" type="text">
+    </label><br>
+    <label>密码
+        <input name="password" type="password">
+    </label><br>
+    <label>验证码
+        <input name="code" type="text"><img id="captcha" src="/captcha/" alt="captcha">
+    </label><br>
+    <input type="submit" value="登录"><span th:if="${msg!=null}" th:text="${msg}"></span><br>
+</form>
+<a href="/register">注册</a><br>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+            $("#captcha").click(function () {
+                let date = new Date();
+                let name = "/captcha/" + date.getTime();
+                $("#captcha").attr("src", name);
+            })
+        }
+    );
+</script>
+</body>
+</html>

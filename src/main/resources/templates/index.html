@@ -21,15 +21,16 @@
                        aria-label="Search">
             </form>
             <div th:unless="${session.user!=null}" class="navbar-nav">
-                <a class="nav-item nav-link"
-                   th:href="'https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri='+${@environment.getProperty('gitee.redirect.uri')}+'&response_type=code'"
-                   href="https://gitee.com/oauth/authorize?client_id=eb00a0698b705d167196002dfe4392d69aad1b743525c72a6b617b5a8acece40&redirect_uri=http://localhost:8080/login&response_type=code">通过Gitee登录</a>
+                <a class="nav-item nav-link" href="/login">登录</a>
+                <a class="nav-item nav-link" href="/register">注册</a>
             </div>
-            <div th:if="${session.user!=null}" th:object="${session.user}" class="flex-shrink-0 dropdown ms-auto">
+            <div th:if="${session.user!=null}" class="flex-shrink-0 dropdown ms-auto">
                 <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser2"
                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <img th:src="*{avatarUrl}" src="/avatar.jpg" alt="avatar" width="32" height="32"
+                    <img th:src="${session.user.avatarUrl!=null}?${session.user.avatarUrl}:'/img/avatar.jpg'"
+                         src="/img/avatar.jpg" alt="avatar" width="32" height="32"
                          class="rounded-circle img-thumbnail">
+                    <span th:text="${session.user.username}"></span>
                 </a>
                 <ul class="dropdown-menu text-small shadow dropdown-menu-dark dropdown-menu-end"
                     aria-labelledby="dropdownUser2">
@@ -68,19 +69,21 @@
                     <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
                          class="container d-flex mt-2 border-bottom">
                         <div class="flex-shrink-0">
-                            <img th:src="*{avatarUrl}" width="55px" class="img-thumbnail" src="/avatar.jpg"
+                            <img th:src="${question.avatarUrl!=null}?${question.avatarUrl}:'/img/avatar.jpg'"
+                                 width="55px" class="img-thumbnail" src="/img/avatar.jpg"
                                  alt="avatar">
                         </div>
                         <div class="flex-grow-1 ms-3">
                             <a th:href="@{'/question/'+${question.id}}" class="text-decoration-none" href="#">
                                 <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                             </a>
-                            <p><small class="text-muted"><span th:text="*{commentCount}"></span>个回复 · </small>
+                            <p><small class="text-muted"><span th:text="${question.comments.size()}"></span>个回复 · </small>
                                 <small class="text-muted"><span th:text="*{viewCount}"></span>次浏览 · </small>
                                 <small class="text-muted"
-                                       th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}+'发布'"></small>
-                                <small th:if="${question.gmtCreate!=question.gmtModified}" class="text-muted"
-                                       th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm')}+'编辑'"></small>
+                                       th:text="${#dates.format(question.gmtCreated,'yyyy-MM-dd HH:mm')}+'发布'"></small>
+                                <small th:if="${question.gmtCreated!=question.gmtModified}" class="text-muted"
+                                       th:text="' · '+${#dates.format(question.gmtModified,'yyyy-MM-dd HH:mm')}+'编辑'">
+                                </small>
                             </p>
                         </div>
                     </div>

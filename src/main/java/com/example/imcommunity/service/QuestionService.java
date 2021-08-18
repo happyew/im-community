@@ -2,8 +2,9 @@ package com.example.imcommunity.service;
 
 import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.dto.QuestionPageDTO;
-import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.entity.Question;
+import com.example.imcommunity.entity.User;
+import com.example.imcommunity.model.QuestionFrom;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -35,10 +36,9 @@ public interface QuestionService {
      * @param page      页码
      * @param size      单页长度
      * @param sort      排序
-     * @param giteeUser Gitee用户
      * @return 分页DTO
      */
-    QuestionPageDTO findPageByGiteeUser(Integer page, Integer size, Sort sort, GiteeUser giteeUser);
+    QuestionPageDTO findPageByUser(Integer page, Integer size, Sort sort, User user);
 
     /**
      * 保存问题
@@ -65,4 +65,8 @@ public interface QuestionService {
     Question findQuestionById(Long id);
 
     void viewIncrement(Long id);
+
+    Question update(QuestionFrom questionFrom);
+
+    Question create(QuestionFrom questionFrom);
 }

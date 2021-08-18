@@ -1,7 +1,10 @@
 package com.example.imcommunity.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,18 +19,25 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
     private Long likeCount;
-    private Date gmt_create;
-    private Date gmt_modified;
+    @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date gmtCreated;
+    @LastModifiedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date gmtModified;
     @ManyToOne(targetEntity = Question.class, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "question_id", referencedColumnName = "id")
     private Question question;
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Reply> replies = new ArrayList<>();
+    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Override
     public boolean equals(Object o) {

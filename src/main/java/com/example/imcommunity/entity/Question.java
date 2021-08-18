@@ -22,24 +22,23 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
     private String tag;
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
-    private Date gmtCreate;
+    private Date gmtCreated;
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     private Date gmtModified;
     private Long viewCount = 0L;
-    private Long commentCount = 0L;
     private Long likeCount = 0L;
-    @ManyToOne(targetEntity = GiteeUser.class, cascade = {CascadeType.MERGE, CascadeType.DETACH})
-    @JoinColumn(name = "gitee_user_id", referencedColumnName = "id")
-    private GiteeUser giteeUser;
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 

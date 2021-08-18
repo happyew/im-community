@@ -1,12 +1,15 @@
 package com.example.imcommunity.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.dto.QuestionDTO;
-import com.example.imcommunity.entity.GiteeUser;
 import com.example.imcommunity.entity.Question;
+import com.example.imcommunity.entity.User;
 import com.example.imcommunity.exception.CustomErrorCode;
 import com.example.imcommunity.exception.CustomException;
+import com.example.imcommunity.model.QuestionFrom;
 import com.example.imcommunity.service.QuestionService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -31,83 +35,50 @@ public class PublishController {
     /**
      * Get请求，登录后发起提问
      *
-     * @param request 请求
      * @return 视图
      */
     @GetMapping("/publish")
-    public String publish(@NotNull HttpServletRequest request) {
-        // 根据cookie验证是否登录
-        GiteeUser user = (GiteeUser) request.getSession().getAttribute("user");
-        if (user != null) {
-            return "publish";
-        }
-        // 未登录
-        return "redirect:/";
+    public String publish(HttpSession session) {
+        return "publish";
     }
 
     /**
      * 新建或修改问题
      *
-     * @param title       问题标题
-     * @param description 问题描述
-     * @param tag         问题标签
-     * @param request     请求
      * @return 视图
      */
     @PostMapping("/publish")
-    public String save(@RequestParam(name = "title", defaultValue = "") String title,
-                       @RequestParam(name = "description", defaultValue = "") String description,
-                       @RequestParam(name = "tag", defaultValue = "") String tag,
-                       @RequestParam(name = "id", defaultValue = "") Long id,
-                       @NotNull HttpServletRequest request,
+    public String save(QuestionFrom questionFrom, Long id,
+                       HttpSession session,
                        Model model) {
-        // 验证是否登录
-        GiteeUser giteeUser = (GiteeUser) request.getSession().getAttribute("user");
-        if (giteeUser != null) {
-            QuestionDTO questionDTO = new QuestionDTO();
-            questionDTO.setTitle(title);
-            questionDTO.setDescription(description);
-            questionDTO.setTag(tag);
-            // id不为空是修改问题
-            if (id != null) {
-                questionDTO.setId(id);
-            }
-            model.addAttribute("questionDTO", questionDTO);
-            if ("".equals(title)) {
-                model.addAttribute("error", "标题不能为空！");
-                return "publish";
-            }
-            if ("".equals(description)) {
-                model.addAttribute("error", "描述不能为空！");
-                return "publish";
-            }
-            if ("".equals(tag)) {
-                model.addAttribute("error", "标签不能为空！");
-                return "publish";
-            }
-            if (id != null) {
-                // id不为空，更新问题
-                Question question = questionService.findQuestionById(id);
-                question.setTitle(title);
-                question.setDescription(description);
-                question.setTag(tag);
-                // 更新修改时间
-                question.setGmtModified(new Date());
-                questionService.save(question);
-                return "redirect:/question/" + id;
-            }
-            // id为空，新建问题
-            Question question = new Question();
-            question.setGmtCreate(new Date());
-            question.setGmtModified(question.getGmtCreate());
-            question.setTitle(title);
-            question.setTag(tag);
-            question.setDescription(description);
-            question.setGiteeUser(giteeUser);
-            Question questionSaved = questionService.save(question);
-            return "redirect:/question/" + questionSaved.getId();
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(questionFrom, questionDTO);
+        // id不为空是修改问题
+        if (id != null) {
+            questionDTO.setId(id);
         }
-        throw new CustomException(CustomErrorCode.NOT_LOGIN);
+        model.addAttribute("questionDTO", questionDTO);
+        if ("".equals(questionDTO.getTitle())) {
+            model.addAttribute("error", "标题不能为空！");
+            return "publish";
+        }
+        if ("".equals(questionDTO.getDescription())) {
+            model.addAttribute("error", "描述不能为空！");
+            return "publish";
+        }
+        if ("".equals(questionDTO.getTag())) {
+            model.addAttribute("error", "标签不能为空！");
+            return "publish";
+        }
+        if (id != null) {
+            // id不为空，更新问题
+            questionFrom.setId(id);
+            questionService.update(questionFrom);
+            return StrUtil.format("redirect:/question/{}", id);
+        }
+        // id为空，新建问题
+        Question questionSaved = questionService.create(questionFrom);
+        return StrUtil.format("redirect:/question/{}", questionSaved.getId());
     }
 
     /**
@@ -122,15 +93,9 @@ public class PublishController {
     public String edit(@PathVariable Long id,
                        @NotNull HttpServletRequest request,
                        Model model) {
-        GiteeUser giteeUser = (GiteeUser) request.getSession().getAttribute("user");
-        if (giteeUser != null) {
-            QuestionDTO questionDTO = questionService.findQuestionDTOById(id);
-            // 判断该问题的作者是否为当前登录用户
-            if (giteeUser.getId().equals(questionDTO.getUserid())) {
-                model.addAttribute("questionDTO", questionDTO);
-                return "publish";
-            }
-        }
-        throw new CustomException(CustomErrorCode.NOT_LOGIN);
+        QuestionDTO questionDTO = questionService.findQuestionDTOById(id);
+
+        model.addAttribute("questionDTO", questionDTO);
+        return "publish";
     }
 }
