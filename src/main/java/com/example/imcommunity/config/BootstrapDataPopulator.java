@@ -4,7 +4,6 @@ import com.example.imcommunity.entity.Permission;
 import com.example.imcommunity.entity.Role;
 import com.example.imcommunity.entity.User;
 import com.example.imcommunity.service.UserService;
-import com.example.imcommunity.util.PasswordUtil;
 import com.example.imcommunity.util.SaltUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;

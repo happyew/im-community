@@ -3,7 +3,6 @@ package com.example.imcommunity.controller;
 import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.model.CommentFrom;
 import com.example.imcommunity.service.CommentService;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

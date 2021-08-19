@@ -1,7 +1,6 @@
 package com.example.imcommunity.dto;
 
 import com.example.imcommunity.entity.Comment;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.ArrayList;

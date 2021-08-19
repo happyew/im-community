@@ -1,8 +1,6 @@
 package com.example.imcommunity.service.impl;
 
 import com.example.imcommunity.entity.User;
-import com.example.imcommunity.exception.CustomErrorCode;
-import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.model.UserFrom;
 import com.example.imcommunity.repository.UserRepository;
 import com.example.imcommunity.service.UserService;

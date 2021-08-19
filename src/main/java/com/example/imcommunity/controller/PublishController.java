@@ -3,9 +3,6 @@ package com.example.imcommunity.controller;
 import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.entity.Question;
-import com.example.imcommunity.entity.User;
-import com.example.imcommunity.exception.CustomErrorCode;
-import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.model.QuestionFrom;
 import com.example.imcommunity.service.QuestionService;
 import org.jetbrains.annotations.NotNull;
@@ -15,11 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 /**
  * 登陆后发起提问的控制器

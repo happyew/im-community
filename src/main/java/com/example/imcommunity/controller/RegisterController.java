@@ -2,23 +2,16 @@ package com.example.imcommunity.controller;
 
 import cn.hutool.captcha.ShearCaptcha;
 import cn.hutool.core.util.StrUtil;
-import com.example.imcommunity.entity.User;
 import com.example.imcommunity.model.UserFrom;
 import com.example.imcommunity.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.util.Objects;
 
 @Controller
 public class RegisterController {
@@ -62,7 +55,7 @@ public class RegisterController {
             model.addAttribute("msg", "该用户名已被使用");
             return "register";
         }
-        attributes.addAttribute("msg", "注册成功");
+        model.addAttribute("msg", "注册成功");
         return "redirect:/login";
     }
 }
