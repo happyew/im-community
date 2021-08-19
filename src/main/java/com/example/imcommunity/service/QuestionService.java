@@ -18,7 +18,7 @@ public interface QuestionService {
      *
      * @return 问题DTO
      */
-    List<QuestionDTO> findAll();
+    List<QuestionDTO> findAllQuestionDTO();
 
     /**
      * 分页查找所有问题的PageDTO
@@ -39,14 +39,6 @@ public interface QuestionService {
      * @return 分页DTO
      */
     QuestionPageDTO findPageByUser(Integer page, Integer size, Sort sort, User user);
-
-    /**
-     * 保存问题
-     *
-     * @param question 问题
-     * @return 已保存的问题
-     */
-    Question save(Question question);
 
     /**
      * 根据id查找问题DTO

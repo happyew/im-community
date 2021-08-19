@@ -34,14 +34,14 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDTO> findAll() {
+    public List<QuestionDTO> findAllQuestionDTO() {
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         List<Question> questions = questionRepository.findAll();
         if (questions.size() > 0) {
             questions.forEach(question -> {
                 QuestionDTO questionDTO = new QuestionDTO();
                 BeanUtils.copyProperties(question, questionDTO);
-//                questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
+                questionDTO.setAvatarUrl(question.getUser().getAvatarUrl());
                 questionDTOS.add(questionDTO);
             });
             return questionDTOS;
@@ -61,7 +61,7 @@ public class QuestionServiceImpl implements QuestionService {
             questions.getContent().forEach(question -> {
                 QuestionDTO questionDTO = new QuestionDTO();
                 BeanUtils.copyProperties(question, questionDTO);
-//                questionDTO.setAvatarUrl(question.getGiteeUser().getAvatarUrl());
+                questionDTO.setAvatarUrl(question.getUser().getAvatarUrl());
                 questionDTOList.add(questionDTO);
             });
             return questionPageDTO;
@@ -89,25 +89,20 @@ public class QuestionServiceImpl implements QuestionService {
         return null;
     }
 
-    @Override
-    public Question save(Question question) {
+    private Question save(Question question) {
         return questionRepository.save(question);
     }
 
     @Override
     public QuestionDTO findQuestionDTOById(Long id) {
-        Optional<Question> optional = questionRepository.findById(id);
-        if (optional.isPresent()) {
-            Question question = optional.get();
-            QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question, questionDTO);
-            questionDTO.setAvatarUrl(question.getUser().getAvatarUrl());
-            questionDTO.setUsername(question.getUser().getUsername());
-            questionDTO.setUserid(question.getUser().getId());
-            questionDTO.setComments(question.getComments());
-            return questionDTO;
-        }
-        throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
+        Question question = findQuestionById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        questionDTO.setAvatarUrl(question.getUser().getAvatarUrl());
+        questionDTO.setUsername(question.getUser().getUsername());
+        questionDTO.setUserid(question.getUser().getId());
+        questionDTO.setComments(question.getComments());
+        return questionDTO;
     }
 
     @Override
@@ -121,14 +116,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void viewIncrement(Long id) {
-        Optional<Question> questionOptional = questionRepository.findById(id);
-        if (questionOptional.isPresent()) {
-            Question question = questionOptional.get();
-            question.setViewCount(question.getViewCount() + 1);
-            questionRepository.save(question);
-        } else {
-            throw new CustomException(CustomErrorCode.QUESTION_NOT_FOUND);
-        }
+        Question question = findQuestionById(id);
+        question.setViewCount(question.getViewCount() + 1);
+        save(question);
     }
 
     @Override
@@ -136,7 +126,7 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = findQuestionById(questionFrom.getId());
         BeanUtils.copyProperties(questionFrom, question);
         question.setGmtModified(new Date());
-        return questionRepository.save(question);
+        return save(question);
     }
 
     @Override
@@ -146,6 +136,6 @@ public class QuestionServiceImpl implements QuestionService {
         newQuestion.setUser(userService.findUserById(questionFrom.getUserId()));
         newQuestion.setGmtCreated(new Date());
         newQuestion.setGmtModified(newQuestion.getGmtCreated());
-        return questionRepository.save(newQuestion);
+        return save(newQuestion);
     }
 }
