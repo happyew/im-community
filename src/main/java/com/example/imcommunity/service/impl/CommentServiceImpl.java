@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -40,5 +41,14 @@ public class CommentServiceImpl implements CommentService {
         user.getComments().add(newComment);
         question.getComments().add(newComment);
         return commentRepository.save(newComment);
+    }
+
+    @Override
+    public Comment findCommentById(Long id) {
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isPresent()) {
+            return commentOptional.get();
+        }
+        return null;
     }
 }

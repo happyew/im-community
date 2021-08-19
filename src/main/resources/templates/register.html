@@ -1,24 +1,52 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>注册</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,height = device-height, initial-scale=1.0">
+    <title>注册账号 - IM-Community</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/common.css">
 </head>
-<body>
-<h1>注册</h1>
-<form action="/register" method="post">
-    <label>用户名
-        <input type="text" name="username">
-    </label><br>
-    <label>密码
-        <input type="password" name="password">
-    </label><br>
-    <label>验证码
-        <input type="text" name="code"><img id="captcha" src="/captcha/" alt="captcha">
-    </label><br>
-    <input type="submit" value="注册"><span th:if="${msg!=null}" th:text="${msg}"></span>
-</form>
+<body class="bg-light d-flex flex-column">
+<section th:replace="~{index::navbar}"></section>
+<section>
+    <div class="container my-4 py-4 justify-content-md-center">
+        <form class="container col-lg-4 col-xl-3 col-md-6 col-sm-12 my-4 py-4" action="/register" method="post">
+            <h1 class="text-center h3 mb-3 fw-normal">注册账号</h1>
+            <div class="form-floating">
+                <input name="username" type="text" class="form-control" id="floatingInput" placeholder="用户名"
+                       autocomplete="off" required>
+                <label for="floatingInput">用户名</label>
+            </div>
+            <div class="form-floating">
+                <input name="password" type="password" class="form-control" id="floatingPassword"
+                       placeholder="Password" required>
+                <label for="floatingPassword">密码</label>
+            </div>
+            <div class="d-flex">
+                <div class="form-floating flex-fill me-1">
+                    <input name="code" type="text" class="form-control" id="code"
+                           placeholder="captcha" autocomplete="off" required>
+                    <label for="code">验证码</label>
+                </div>
+                <img class="float-end" id="captcha" src="/captcha/" alt="captcha">
+            </div>
+            <button class="w-100 btn btn-lg btn-success my-2" type="submit">注册</button>
+            <div class="alert alert-info text-center mb-2" role="alert">
+                已有账号? 立即<a href="/login" class="alert-link">登录</a>
+            </div>
+            <div th:if="${msg!=null}" th:text="${msg}" class="alert alert-success text-center" role="alert"></div>
+        </form>
+    </div>
+</section>
+<section th:replace="~{index::footer}"></section>
 <script src="/js/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
 <script>
     $(function () {
             $("#captcha").click(function () {

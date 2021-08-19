@@ -1,6 +1,5 @@
 package com.example.imcommunity.config;
 
-import com.example.imcommunity.entity.Permission;
 import com.example.imcommunity.entity.User;
 import com.example.imcommunity.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
@@ -17,13 +16,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 public class CustomRealm extends AuthorizingRealm {
     private final UserService userService;
 
-    public CustomRealm(UserService userService){
+    public CustomRealm(UserService userService) {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
         credentialsMatcher.setHashAlgorithmName("md5");
         credentialsMatcher.setHashIterations(1024);
@@ -38,15 +37,25 @@ public class CustomRealm extends AuthorizingRealm {
         System.out.println(user);
         if (!CollectionUtils.isEmpty(user.getRoles())) {
             SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+            Long userId = user.getId();
             user.getRoles().forEach(role -> {
                 System.out.println(role);
                 simpleAuthorizationInfo.addRole(role.getName());
-                List<Permission> permissions = role.getPermissions();
-                if (!CollectionUtils.isEmpty(permissions)) {
-                    permissions.forEach(permission -> {
-                        System.out.println(permission);
-                        simpleAuthorizationInfo.addStringPermission(permission.getName());
-                    });
+                Set<String> permissions = role.getPermissions();
+                if ("admin".equals(role.getName())) {
+                    if (!CollectionUtils.isEmpty(permissions)) {
+                        permissions.forEach(permission -> {
+                            System.out.println(permission);
+                            simpleAuthorizationInfo.addStringPermission(permission);
+                        });
+                    }
+                } else {
+                    if (!CollectionUtils.isEmpty(permissions)) {
+                        permissions.forEach(permission -> {
+                            System.out.println(permission);
+                            simpleAuthorizationInfo.addStringPermission(permission + userId);
+                        });
+                    }
                 }
             });
             return simpleAuthorizationInfo;

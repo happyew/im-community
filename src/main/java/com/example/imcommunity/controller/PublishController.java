@@ -3,9 +3,12 @@ package com.example.imcommunity.controller;
 import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.entity.Question;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.model.QuestionFrom;
 import com.example.imcommunity.service.QuestionService;
-import org.jetbrains.annotations.NotNull;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -33,7 +35,7 @@ public class PublishController {
      * @return 视图
      */
     @GetMapping("/publish")
-    public String publish(HttpSession session) {
+    public String publish() {
         return "publish";
     }
 
@@ -43,35 +45,9 @@ public class PublishController {
      * @return 视图
      */
     @PostMapping("/publish")
-    public String save(QuestionFrom questionFrom, Long id,
-                       HttpSession session,
-                       Model model) {
-        QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(questionFrom, questionDTO);
-        // id不为空是修改问题
-        if (id != null) {
-            questionDTO.setId(id);
-        }
-        model.addAttribute("questionDTO", questionDTO);
-        if ("".equals(questionDTO.getTitle())) {
-            model.addAttribute("error", "标题不能为空！");
-            return "publish";
-        }
-        if ("".equals(questionDTO.getDescription())) {
-            model.addAttribute("error", "描述不能为空！");
-            return "publish";
-        }
-        if ("".equals(questionDTO.getTag())) {
-            model.addAttribute("error", "标签不能为空！");
-            return "publish";
-        }
-        if (id != null) {
-            // id不为空，更新问题
-            questionFrom.setId(id);
-            questionService.update(questionFrom);
-            return StrUtil.format("redirect:/question/{}", id);
-        }
-        // id为空，新建问题
+    public String create(QuestionFrom questionFrom, Model model) {
+        if (checkEmpty(questionFrom, model)) return "publish";
+        // 新建问题
         Question questionSaved = questionService.create(questionFrom);
         return StrUtil.format("redirect:/question/{}", questionSaved.getId());
     }
@@ -79,18 +55,52 @@ public class PublishController {
     /**
      * 编辑问题
      *
-     * @param id      问题id
-     * @param model   模型
-     * @param request 请求
+     * @param id    问题id
+     * @param model 模型
      * @return 视图
      */
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable Long id,
-                       @NotNull HttpServletRequest request,
-                       Model model) {
+    public String update(@PathVariable Long id, Model model) {
         QuestionDTO questionDTO = questionService.findQuestionDTOById(id);
-
+        Subject subject = SecurityUtils.getSubject();
+        boolean permitted = subject.isPermitted("question:update:" + questionDTO.getUserid());
+        if (!permitted) {
+            throw new CustomException(CustomErrorCode.ACCESS_DENIED);
+        }
         model.addAttribute("questionDTO", questionDTO);
         return "publish";
+    }
+
+    @PostMapping("/publish/{id}")
+    public String update(@PathVariable Long id, QuestionFrom questionFrom, Model model) {
+        Subject subject = SecurityUtils.getSubject();
+        boolean permitted = subject.isPermitted("question:update:" + questionFrom.getUserId());
+        if (!permitted) {
+            throw new CustomException(CustomErrorCode.ACCESS_DENIED);
+        }
+        if (checkEmpty(questionFrom, model)) return "publish";
+        questionService.update(questionFrom);
+        return StrUtil.format("redirect:/question/{}", id);
+    }
+
+    private boolean checkEmpty(QuestionFrom questionFrom, Model model) {
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(questionFrom, questionDTO);
+        if (StrUtil.hasEmpty(questionFrom.getTitle())) {
+            model.addAttribute("questionDTO", questionDTO);
+            model.addAttribute("msg", "标题不能为空");
+            return true;
+        }
+        if (StrUtil.hasEmpty(questionFrom.getDescription())) {
+            model.addAttribute("questionDTO", questionDTO);
+            model.addAttribute("msg", "标题不能为空");
+            return true;
+        }
+        if (StrUtil.hasEmpty(questionFrom.getTag())) {
+            model.addAttribute("questionDTO", questionDTO);
+            model.addAttribute("msg", "标签不能为空");
+            return true;
+        }
+        return false;
     }
 }

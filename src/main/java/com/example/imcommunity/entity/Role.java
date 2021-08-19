@@ -1,18 +1,20 @@
 package com.example.imcommunity.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +23,14 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
     private List<User> users = new ArrayList<>();
-    @ManyToMany(targetEntity = Permission.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "role_permission", joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")})
-    @ToString.Exclude
-    private List<Permission> permissions = new ArrayList<>();
+    @ElementCollection(targetClass = String.class)
+    @JoinTable(name = "role_permission")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<String> permissions = new HashSet<>();
+
+    public Role(String name) {
+        this.name = name;
+    }
 
     @Override
     public boolean equals(Object o) {

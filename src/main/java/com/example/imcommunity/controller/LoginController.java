@@ -1,6 +1,6 @@
 package com.example.imcommunity.controller;
 
-import cn.hutool.captcha.ShearCaptcha;
+import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.model.UserFrom;
 import org.apache.shiro.SecurityUtils;
@@ -27,8 +27,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid UserFrom userFrom, String code, Model model, HttpSession session) {
-        ShearCaptcha captcha = (ShearCaptcha) session.getAttribute("captcha");
+    public String login(@Valid UserFrom userFrom, String code, String rememberMe, Model model, HttpSession session) {
+        CircleCaptcha captcha = (CircleCaptcha) session.getAttribute("captcha");
         if (captcha != null && !captcha.verify(code)) {
             session.removeAttribute("captcha");
             model.addAttribute("msg", "验证码错误");
@@ -49,7 +49,11 @@ public class LoginController {
             return "login";
         }
         try {
-            subject.login(new UsernamePasswordToken(username, password));
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            if ("checked".equals(rememberMe)) {
+                token.setRememberMe(true);
+            }
+            subject.login(token);
             return "redirect:/";
         } catch (UnknownAccountException e) {
             e.printStackTrace();
@@ -69,6 +73,6 @@ public class LoginController {
             subject.logout();
             return "redirect:/";
         }
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${questionDTO.title}+' - IM社区'">IM社区</title>
+    <title th:text="${questionDTO.title}+' - IM-Community'">IM-Community</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/common.css">
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column">
 <section th:replace="~{index::navbar}"></section>
 <section class="bg-light container">
     <div class="bg-white row mt-4 pb-4">
@@ -32,13 +33,13 @@
                     <p class="fw-light" th:text="${questionDTO.description}"></p>
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="container d-flow p-4 border-bottom">
                     <button type="button" class="btn btn-primary btn-sm">Java</button>
                     <button type="button" class="btn btn-primary btn-sm">Python</button>
                     <button type="button" class="btn btn-primary btn-sm">Linux</button>
                 </div>
-            </div>
+            </div>-->
             <div th:if="${session.user!=null && questionDTO.userid==session.user.id}" class="row">
                 <div class="d-flow p-2 border-bottom">
                     <div class=" float-end">
@@ -47,14 +48,15 @@
                     </div>
                 </div>
             </div>
-            <div th:if="${questionDTO.comments.size()>0}" class="row">
+            <div th:if="${questionDTO.comments.size()>0}" class="row border-bottom">
                 <div class="container pt-4 px-4">
-                    <h5 class="border-bottom pb-2"><span th:text="${questionDTO.comments.size()}"></span>个回复</h5>
+                    <h5 class="pb-2"><span th:text="${questionDTO.comments.size()}"></span>个回复</h5>
                 </div>
             </div>
             <div th:if="${questionDTO.comments.size()>0}" class="row">
-                <div class="container px-4">
-                    <div th:each="comment,index:${questionDTO.comments}"
+                <div class="container px-2">
+                    <!--一级回复-->
+                    <div th:each="comment,status:${questionDTO.comments}"
                          class="d-flex ms-2 mt-2 border-bottom">
                         <div class="flex-shrink-0">
                             <img th:src="${questionDTO.avatarUrl!=null}?${questionDTO.avatarUrl}:'/img/avatar.jpg'"
@@ -64,6 +66,62 @@
                         <div class="flex-grow-1 ms-3">
                             <small class="text-muted"><span th:text="${comment.user.username}"></span></small>
                             <p class="mt-2" th:text="${comment.content}"></p>
+                            <small class="text-muted">
+                                <span class="float-end mt-3 me-2"
+                                      th:text="${#dates.format(comment.gmtCreated,'yyyy-MM-dd HH:mm')}"></span>
+                            </small>
+                            <!--二级回复-->
+                            <div>
+                                <p>
+                                    <button th:attr="data-bs-target='#comment'+${status.index},aria-controls='comment'+${status.index}"
+                                            class="btn btn-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseExample" aria-expanded="false"
+                                            aria-controls="collapseExample">
+                                        <i class="bi bi-chat-left-dots-fill"></i>
+                                        <span th:text="${comment.replies.size()}" class="ms-2">0</span>
+                                    </button>
+                                </p>
+                                <div th:attr="id='comment'+${status.index}" class="collapse mb-2" id="collapseExample">
+                                    <div class="card card-body">
+                                        <div th:if="${comment.replies.size()>0}" th:each="reply:${comment.replies}"
+                                             class="d-flex ms-2 mt-2 border-bottom">
+                                            <div class="flex-shrink-0">
+                                                <img th:src="${reply.user.avatarUrl!=null}?${reply.user.avatarUrl}:'/img/avatar.jpg'"
+                                                     width="50px" class="img-thumbnail" src="/avatar.jpg"
+                                                     alt="avatar">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3 mb-2">
+                                                <small class="text-muted"><span
+                                                        th:text="${reply.user.username}"></span></small>
+                                                <p class="mt-2 mb-2" th:text="${reply.content}"></p><small
+                                                    class="text-muted">
+                                                <span th:text="${#dates.format(reply.gmtCreated,'yyyy-MM-dd HH:mm')}"></span></small>
+
+                                            </div>
+                                        </div>
+                                        <div th:if="${session.user!=null}" class="container mt-2 pt-2 px-4">
+                                            <form action="/comment"
+                                                  method="POST"
+                                                  class="form justify-content-center">
+                                                <input th:value="${session.user.id}" name="userId" type="hidden">
+                                                <input th:value="${comment.id}" name="commentId" type="hidden">
+                                                <input th:value="${questionDTO.id}" name="questionId" type="hidden">
+                                                <input name="content" class="form-control" type="text"
+                                                       placeholder="回复..."
+                                                       aria-label="default input example" autocomplete="off" required>
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
+                                                    <button type="submit" class="btn btn-success">提交</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div th:unless="${session.user!=null}" class="container mt-2 pt-2 px-4">
+                                            <div class="alert alert-info" role="alert">
+                                                <a href="/login" class="alert-link">登录</a>后可回复
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -84,23 +142,23 @@
                 </div>
             </div>
             <div class="row">
-                <div th:unless="${session.user!=null}" class="container pt-2 px-4">
-                    <div class="alert alert-info" role="alert">
-                        <a href="/login" class="alert-link">登录</a>后可回复
-                    </div>
-                </div>
                 <div th:if="${session.user!=null}" class="container pt-2 px-4">
                     <form th:action="'/question/'+${questionDTO.id}+'/comment'" action="comment" method="POST"
                           class="form-floating justify-content-center">
                         <input name="userId" type="hidden" th:value="${session.user.id}">
                         <input name="questionId" type="hidden" th:value="${questionDTO.id}">
                         <textarea class="form-control" placeholder="请输入回复" name="content" id="content"
-                                  style="height: 125px"></textarea>
+                                  style="height: 125px" autocomplete="off" required></textarea>
                         <label for="content">回复</label>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                            <button type="submit" class="btn btn-primary">提交</button>
+                            <button type="submit" class="btn btn-success">提交</button>
                         </div>
                     </form>
+                </div>
+                <div th:unless="${session.user!=null}" class="container mt-2 pt-2 px-4">
+                    <div class="alert alert-info" role="alert">
+                        <a href="/login" class="alert-link">登录</a>后可回复
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,6 +182,7 @@
     </div>
 </section>
 <section th:replace="~{index::footer}"></section>
+<script src="/js/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>

@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>发起提问 - IM社区</title>
+    <title>发起提问 - IM-Community</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/common.css">
 </head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column">
 <section th:replace="~{index::navbar}"></section>
 <section class="bg-light my-4">
     <div class="container bg-white d-grid d-flow p-4">
@@ -19,23 +20,30 @@
             <div class="container col-md-8 border-end">
                 <h4><i class="bi bi-plus-square-dotted me-2"></i>发起提问</h4>
                 <form action="/publish" method="post">
-                    <input type="hidden" name="userId" th:value="${session.user.id}">
-                    <input th:if="${questionDTO!=null && questionDTO.id!=null}" th:value="${questionDTO.id}" name="id" type="hidden">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">问题标题（必填）:</label>
-                        <input th:value="${questionDTO!=null && questionDTO.title!=null} ? ${questionDTO.title}" name="title" type="text" class="form-control" id="title"
-                               placeholder="问题标题...">
+                    <input th:if="${questionDTO!=null && questionDTO.userid!=null}"
+                           th:value="${questionDTO.userid}" type="hidden" name="userId">
+                    <input th:if="${questionDTO!=null && questionDTO.id!=null}"
+                           th:value="${questionDTO.id}" name="id" type="hidden">
+                    <div class="form-floating my-3">
+                        <input name="title"
+                               th:value="${questionDTO!=null && questionDTO.title!=null} ? ${questionDTO.title}"
+                               type="text" class="form-control" id="title" placeholder="标题..." required
+                               autocomplete="off">
+                        <label for="title">标题...</label>
                     </div>
                     <div class="form-floating">
-                            <textarea th:text="${questionDTO!=null && questionDTO.description!=null}?${questionDTO.description}" name="description" class="form-control"
-                                      placeholder="请输入问题描述..." id="description"
-                                      style="height: 300px"></textarea>
-                        <label for="description">请输入问题描述（必填）</label>
+                            <textarea
+                                    th:text="${questionDTO!=null && questionDTO.description!=null}?${questionDTO.description}"
+                                    name="description" class="form-control"
+                                    placeholder="问题描述..." id="description"
+                                    style="height: 300px"></textarea>
+                        <label for="description">问题描述...</label>
                     </div>
-                    <div class="my-3">
-                        <label for="tag" class="form-label">添加标签（必填）:</label>
-                        <input th:value="${questionDTO!=null && questionDTO.tag!=null}?${questionDTO.tag}" name="tag" type="text" class="form-control" id="tag"
-                               placeholder="输入标签，以逗号分隔...">
+                    <div class="form-floating my-3">
+                        <input name="tag" th:value="${questionDTO!=null && questionDTO.tag!=null}?${questionDTO.tag}"
+                               type="text" class="form-control" id="tag" placeholder="标签..." required
+                               autocomplete="off">
+                        <label for="tag">标签...</label>
                     </div>
                     <!--<ul class="nav nav-tabs my-2">
                         <li class="nav-item">
@@ -63,14 +71,14 @@
                             <div th:if="${error!=null}"
                                  class="alert alert-danger alert-dismissible fade show mt-4 justify-content-center"
                                  role="alert">
-                                <strong th:text="${error}">标题不能为空</strong>
+                                <strong th:text="${error}"></strong>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
                                         aria-label="Close"></button>
                             </div>
                         </div>
                         <div class="container col-md-4 col-sm-12 mt-4">
                             <div class="d-grid ms-auto gap-2 justify-content-md-end my-4">
-                                <button type="submit" class="btn btn-primary">提交</button>
+                                <button type="submit" class="btn btn-success">提交</button>
                             </div>
                         </div>
                     </div>
@@ -81,14 +89,14 @@
                 <ul class="py-2">
                     <li><small>问题标题: 请用精简的语言描述您发布的问题，不超过25字</small></li>
                     <li><small>问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料</small></li>
-                    <li><small>选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字</small></li>
+                    <li><small>选择标签: 选择一个或者多个合适的标签，用空格隔开，每个标签不超过10个字</small></li>
                 </ul>
-
             </div>
         </div>
     </div>
 </section>
 <section th:replace="~{index::footer}" class="py-2 text-center font-monospace"></section>
+<script src="/js/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>

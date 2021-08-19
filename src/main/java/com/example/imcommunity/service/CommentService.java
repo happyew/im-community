@@ -5,4 +5,6 @@ import com.example.imcommunity.model.CommentFrom;
 
 public interface CommentService {
     Comment create(CommentFrom commentFrom);
+
+    Comment findCommentById(Long id);
 }

@@ -1,8 +1,10 @@
 package com.example.imcommunity.service.impl;
 
+import com.example.imcommunity.entity.Role;
 import com.example.imcommunity.entity.User;
 import com.example.imcommunity.model.UserFrom;
 import com.example.imcommunity.repository.UserRepository;
+import com.example.imcommunity.service.RoleService;
 import com.example.imcommunity.service.UserService;
 import com.example.imcommunity.util.PasswordUtil;
 import com.example.imcommunity.util.SaltUtil;
@@ -15,9 +17,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     @Override
@@ -42,13 +46,15 @@ public class UserServiceImpl implements UserService {
     public User create(UserFrom userFrom) {
         User userExisted = findByUsername(userFrom.getUsername());
         if (userExisted == null) {
-            User user = new User();
-            BeanUtils.copyProperties(userFrom, user);
-            user.setGmtCreated(new Date());
-            user.setGmtModified(user.getGmtCreated());
-            user.setSalt(SaltUtil.getSalt());
-            user.setPassword(PasswordUtil.toMd5Hash(user.getPassword(), user.getSalt()));
-            return userRepository.save(user);
+            Role userRole = roleService.findRoleByName("user");
+            User newUser = new User();
+            BeanUtils.copyProperties(userFrom, newUser);
+            newUser.setGmtCreated(new Date());
+            newUser.setGmtModified(newUser.getGmtCreated());
+            newUser.setSalt(SaltUtil.getSalt());
+            newUser.setPassword(PasswordUtil.toMd5Hash(newUser.getPassword(), newUser.getSalt()));
+            newUser.getRoles().add(userRole);
+            return userRepository.save(newUser);
         }
         return null;
     }
@@ -56,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             return userOptional.get();
         }
         return null;

@@ -2,11 +2,15 @@ package com.example.imcommunity.config;
 
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.codec.Base64;
+import org.apache.shiro.mgt.RememberMeManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,10 +43,11 @@ public class ShiroConfig {
     }
 
     @Bean
-    public DefaultWebSecurityManager getSecurityManager(Realm realm, CacheManager cacheManager) {
+    public DefaultWebSecurityManager getSecurityManager(Realm realm, CacheManager cacheManager, RememberMeManager rememberMeManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         securityManager.setCacheManager(cacheManager);
+        securityManager.setRememberMeManager(rememberMeManager);
         return securityManager;
     }
 
@@ -80,5 +85,16 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    @Bean
+    public RememberMeManager getRememberMeManager() {
+        CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
+        SimpleCookie cookie = new SimpleCookie("rememberMe");
+//        cookie.setMaxAge(30 * 24 * 60 * 60);
+        rememberMeManager.setCookie(cookie);
+        rememberMeManager.setCipherKey("ZHANGXIAOHEI_CAT".getBytes());
+//        rememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
+        return rememberMeManager;
     }
 }
