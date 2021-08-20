@@ -2,7 +2,7 @@ package com.example.imcommunity.service.impl;
 
 import com.example.imcommunity.entity.Role;
 import com.example.imcommunity.entity.User;
-import com.example.imcommunity.model.UserFrom;
+import com.example.imcommunity.model.UserForm;
 import com.example.imcommunity.repository.UserRepository;
 import com.example.imcommunity.service.RoleService;
 import com.example.imcommunity.service.UserService;
@@ -43,12 +43,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(UserFrom userFrom) {
-        User userExisted = findByUsername(userFrom.getUsername());
+    public User create(UserForm userForm) {
+        User userExisted = findByUsername(userForm.getUsername());
         if (userExisted == null) {
             Role userRole = roleService.findRoleByName("user");
             User newUser = new User();
-            BeanUtils.copyProperties(userFrom, newUser);
+            BeanUtils.copyProperties(userForm, newUser);
             newUser.setGmtCreated(new Date());
             newUser.setGmtModified(newUser.getGmtCreated());
             newUser.setSalt(SaltUtil.getSalt());

@@ -2,7 +2,7 @@ package com.example.imcommunity.controller;
 
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
-import com.example.imcommunity.model.UserFrom;
+import com.example.imcommunity.model.UserForm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -27,7 +27,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid UserFrom userFrom, String code, String rememberMe, Model model, HttpSession session) {
+    public String login(@Valid UserForm userForm, String code, String rememberMe, Model model, HttpSession session) {
         CircleCaptcha captcha = (CircleCaptcha) session.getAttribute("captcha");
         if (captcha != null && !captcha.verify(code)) {
             session.removeAttribute("captcha");
@@ -38,8 +38,8 @@ public class LoginController {
         if (subject.isAuthenticated()) {
             return "redirect:/";
         }
-        String username = userFrom.getUsername();
-        String password = userFrom.getPassword();
+        String username = userForm.getUsername();
+        String password = userForm.getPassword();
         if (StrUtil.hasEmpty(username) || StrUtil.hasBlank(username)) {
             model.addAttribute("msg", "用户名不能为空，不能有空格");
             return "login";

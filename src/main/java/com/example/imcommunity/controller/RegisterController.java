@@ -2,7 +2,7 @@ package com.example.imcommunity.controller;
 
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
-import com.example.imcommunity.model.UserFrom;
+import com.example.imcommunity.model.UserForm;
 import com.example.imcommunity.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(UserFrom userFrom, String code, Model model, HttpSession session) {
+    public String register(UserForm userForm, String code, Model model, HttpSession session) {
         if (SecurityUtils.getSubject().isAuthenticated()) {
             return "redirect:/";
         }
@@ -39,8 +39,8 @@ public class RegisterController {
             model.addAttribute("msg", "验证码错误");
             return "register";
         }
-        String username = userFrom.getUsername();
-        String password = userFrom.getPassword();
+        String username = userForm.getUsername();
+        String password = userForm.getPassword();
         if (StrUtil.hasEmpty(username) || StrUtil.containsBlank(username)) {
             model.addAttribute("msg", "用户名不能有空格");
             return "register";
@@ -49,7 +49,7 @@ public class RegisterController {
             model.addAttribute("msg", "密码不能有空格");
             return "register";
         }
-        if (userService.create(userFrom) == null) {
+        if (userService.create(userForm) == null) {
             model.addAttribute("msg", "该用户名已被使用");
             return "register";
         }

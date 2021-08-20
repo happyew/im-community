@@ -4,7 +4,7 @@ import com.example.imcommunity.dto.QuestionDTO;
 import com.example.imcommunity.dto.QuestionPageDTO;
 import com.example.imcommunity.entity.Question;
 import com.example.imcommunity.entity.User;
-import com.example.imcommunity.model.QuestionFrom;
+import com.example.imcommunity.model.QuestionForm;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public interface QuestionService {
 
     void viewIncrement(Long id);
 
-    Question update(QuestionFrom questionFrom);
+    Question update(QuestionForm questionForm);
 
-    Question create(QuestionFrom questionFrom);
+    Question create(QuestionForm questionForm);
 }

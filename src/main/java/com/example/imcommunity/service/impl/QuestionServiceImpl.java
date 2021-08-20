@@ -6,7 +6,7 @@ import com.example.imcommunity.entity.Question;
 import com.example.imcommunity.entity.User;
 import com.example.imcommunity.exception.CustomErrorCode;
 import com.example.imcommunity.exception.CustomException;
-import com.example.imcommunity.model.QuestionFrom;
+import com.example.imcommunity.model.QuestionForm;
 import com.example.imcommunity.repository.QuestionRepository;
 import com.example.imcommunity.service.QuestionService;
 import com.example.imcommunity.service.UserService;
@@ -122,18 +122,18 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question update(QuestionFrom questionFrom) {
-        Question question = findQuestionById(questionFrom.getId());
-        BeanUtils.copyProperties(questionFrom, question);
+    public Question update(QuestionForm questionForm) {
+        Question question = findQuestionById(questionForm.getId());
+        BeanUtils.copyProperties(questionForm, question);
         question.setGmtModified(new Date());
         return save(question);
     }
 
     @Override
-    public Question create(QuestionFrom questionFrom) {
+    public Question create(QuestionForm questionForm) {
         Question newQuestion = new Question();
-        BeanUtils.copyProperties(questionFrom, newQuestion);
-        newQuestion.setUser(userService.findUserById(questionFrom.getUserId()));
+        BeanUtils.copyProperties(questionForm, newQuestion);
+        newQuestion.setUser(userService.findUserById(questionForm.getUserId()));
         newQuestion.setGmtCreated(new Date());
         newQuestion.setGmtModified(newQuestion.getGmtCreated());
         return save(newQuestion);

@@ -3,7 +3,7 @@ package com.example.imcommunity.service.impl;
 import com.example.imcommunity.entity.Comment;
 import com.example.imcommunity.entity.Reply;
 import com.example.imcommunity.entity.User;
-import com.example.imcommunity.model.ReplyFrom;
+import com.example.imcommunity.model.ReplyForm;
 import com.example.imcommunity.repository.ReplyRepository;
 import com.example.imcommunity.service.CommentService;
 import com.example.imcommunity.service.ReplyService;
@@ -23,12 +23,12 @@ public class ReplyServiceImpl implements ReplyService {
     private ReplyRepository replyRepository;
 
     @Override
-    public Reply create(ReplyFrom replyFrom) {
+    public Reply create(ReplyForm replyForm) {
         Reply newReply = new Reply();
-        User user = userService.findUserById(replyFrom.getUserId());
-        Comment comment = commentService.findCommentById(replyFrom.getCommentId());
+        User user = userService.findUserById(replyForm.getUserId());
+        Comment comment = commentService.findCommentById(replyForm.getCommentId());
 
-        newReply.setContent(replyFrom.getContent());
+        newReply.setContent(replyForm.getContent());
         newReply.setUser(user);
         newReply.setComment(comment);
 

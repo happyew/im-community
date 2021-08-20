@@ -1,7 +1,7 @@
 package com.example.imcommunity.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.example.imcommunity.model.CommentFrom;
+import com.example.imcommunity.model.CommentForm;
 import com.example.imcommunity.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +14,11 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/question/{id}/comment")
-    public String addComment(@PathVariable String id, CommentFrom commentFrom) {
-        if (StrUtil.hasEmpty(commentFrom.getContent())) {
+    public String addComment(@PathVariable String id, CommentForm commentForm) {
+        if (StrUtil.hasEmpty(commentForm.getContent())) {
             return StrUtil.format("redirect:/question/{}", id);
         }
-        if (commentService.create(commentFrom) != null) {
+        if (commentService.create(commentForm) != null) {
             return StrUtil.format("redirect:/question/{}", id);
         }
         return null;

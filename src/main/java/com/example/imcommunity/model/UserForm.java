@@ -3,7 +3,7 @@ package com.example.imcommunity.model;
 import lombok.Data;
 
 @Data
-public class UserFrom {
+public class UserForm {
     private String username;
     private String password;
 }

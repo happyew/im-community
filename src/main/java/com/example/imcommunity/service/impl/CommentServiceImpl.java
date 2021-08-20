@@ -3,7 +3,7 @@ package com.example.imcommunity.service.impl;
 import com.example.imcommunity.entity.Comment;
 import com.example.imcommunity.entity.Question;
 import com.example.imcommunity.entity.User;
-import com.example.imcommunity.model.CommentFrom;
+import com.example.imcommunity.model.CommentForm;
 import com.example.imcommunity.repository.CommentRepository;
 import com.example.imcommunity.service.CommentService;
 import com.example.imcommunity.service.QuestionService;
@@ -29,11 +29,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment create(CommentFrom commentFrom) {
-        User user = userService.findUserById(commentFrom.getUserId());
-        Question question = questionService.findQuestionById(commentFrom.getQuestionId());
+    public Comment create(CommentForm commentForm) {
+        User user = userService.findUserById(commentForm.getUserId());
+        Question question = questionService.findQuestionById(commentForm.getQuestionId());
         Comment newComment = new Comment();
-        BeanUtils.copyProperties(commentFrom, newComment);
+        BeanUtils.copyProperties(commentForm, newComment);
         newComment.setGmtCreated(new Date());
         newComment.setGmtModified(newComment.getGmtCreated());
         newComment.setUser(user);
