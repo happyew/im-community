@@ -7,7 +7,6 @@ import com.example.imcommunity.model.SetPasswordForm;
 import com.example.imcommunity.service.QuestionService;
 import com.example.imcommunity.service.UserService;
 import com.example.imcommunity.util.PasswordUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +21,12 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class ProfileController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
     private final QuestionService questionService;
 
-    public ProfileController(QuestionService questionService) {
+    public ProfileController(QuestionService questionService, UserService userService) {
         this.questionService = questionService;
+        this.userService = userService;
     }
 
     /**
@@ -47,13 +46,14 @@ public class ProfileController {
         User user = (User) session.getAttribute("user");
         Sort sort = Sort.by(Sort.Direction.DESC, "gmtModified");
         QuestionPageDTO questionPageDTO = questionService.findPageByUser(page, size, sort, user);
+        System.out.println(questionPageDTO);
         model.addAttribute("questionPageDTO", questionPageDTO);
-        return "profile";
+        return "profileQuestion";
     }
 
     @GetMapping("/profile/setPassword")
     public String setPassword() {
-        return "profile";
+        return "profileSetPassword";
     }
 
     @PostMapping("/profile/setPassword")
@@ -62,19 +62,24 @@ public class ProfileController {
         if (captcha != null && !captcha.verify(code)) {
             session.removeAttribute("captcha");
             model.addAttribute("msg", "验证码错误");
-            return "profile";
+            return "profileSetPassword";
         }
         if (!setPasswordForm.getPassword().equals(setPasswordForm.getPasswordRepeated())) {
             model.addAttribute("msg", "两次填写的新密码不一致");
-            return "profile";
+            return "profileSetPassword";
         }
         User user = (User) session.getAttribute("user");
         String passwordOldMd5 = PasswordUtil.toMd5Hash(setPasswordForm.getPasswordOld(), user.getSalt());
         if (!passwordOldMd5.equals(user.getPassword())) {
             model.addAttribute("msg", "旧密码错误");
-            return "profile";
+            return "profileSetPassword";
         }
         userService.update(setPasswordForm, user);
         return "redirect:/logout";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "profile";
     }
 }

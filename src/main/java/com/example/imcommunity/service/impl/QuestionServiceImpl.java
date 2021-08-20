@@ -138,4 +138,9 @@ public class QuestionServiceImpl implements QuestionService {
         newQuestion.setGmtModified(newQuestion.getGmtCreated());
         return save(newQuestion);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        questionRepository.deleteById(id);
+    }
 }

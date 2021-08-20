@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="/css/common.css">
 </head>
 
-<body class="bg-light d-flex flex-column">
+<body class="bg-light">
 <section th:replace="~{index::navbar}"></section>
 <section class="bg-light my-4">
     <div class="container bg-white d-grid d-flow p-4">
         <div class="row p-4">
             <div class="container col-md-9 border-end pe-4">
-                <h4><i class="bi bi-plus-square-dotted me-2"></i>发起提问</h4>
+                <h4><i class="bi bi-question-circle me-2"></i>发起提问</h4>
                 <form action="/publish" method="post">
-                    <input th:if="${questionDTO!=null && questionDTO.userid!=null}"
-                           th:value="${questionDTO.userid}" type="hidden" name="userId">
+                    <input th:if="${session.user.id!=null}"
+                           th:value="${session.user.id}" type="hidden" name="userId">
                     <input th:if="${questionDTO!=null && questionDTO.id!=null}"
                            th:value="${questionDTO.id}" name="id" type="hidden">
                     <div class="form-floating my-3">
@@ -39,12 +39,12 @@
                                     style="height: 150px"></textarea>
                         <label for="description">问题描述...</label>
                     </div>
-                    <div class="form-floating my-3">
+                    <!--<div class="form-floating my-3">
                         <input name="tag" th:value="${questionDTO!=null && questionDTO.tag!=null}?${questionDTO.tag}"
                                type="text" class="form-control" id="tag" placeholder="标签..." required
                                autocomplete="off">
                         <label for="tag">标签...</label>
-                    </div>
+                    </div>-->
                     <!--<ul class="nav nav-tabs my-2">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">编程语言</a>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="container col-md-4 col-sm-12 mt-4">
                             <div class="d-grid ms-auto gap-2 justify-content-md-end my-4">
-                                <button type="submit" class="btn btn-success">提交</button>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-check2-square"></i>提交</button>
                             </div>
                         </div>
                     </div>

@@ -61,4 +61,6 @@ public interface QuestionService {
     Question update(QuestionForm questionForm);
 
     Question create(QuestionForm questionForm);
+
+    void deleteById(Long id);
 }

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的提问 - IM-Community</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+
+<body class="bg-light">
+<section th:replace="~{index::navbar}">
+</section>
+<section class="bg-light container">
+    <div class="bg-white row mt-4 pb-4">
+        <!--我的提问-->
+        <div class="col-md-12 col-lg-9 p-4 mt-4 border-end">
+            <div class="row border-bottom">
+                <div class="container mb-1 ms-4">
+                    <h3><i class="bi bi-chat-dots me-2"></i>我的消息</h3>
+                </div>
+            </div>
+            <div th:if="${notificationPageDTO!=null}" class="row">
+                <div th:if="${notificationPageDTO.notificationDTOS.size()>0}" class="container">
+                    <div class="container">
+                        <div th:each="notification,index:${notificationPageDTO.notificationDTOS}"
+                             th:object="${notification}"
+                             class="d-flex ms-2 mt-2 border-bottom">
+                            <!--<div class="flex-shrink-0">
+                                <img th:src="*{avatarUrl}" width="55px" class="img-thumbnail" src="/avatar.jpg"
+                                     alt="avatar">
+                            </div>-->
+                            <div class="py-2 ms-3 d-md-flex"><span class="text-secondary" th:text="*{notifierName}"></span>在
+                                <a th:if="${notification.status==1}" th:href="*{url}" class="text-decoration-none mt-1"
+                                   href="#">
+                                    <h6 th:text="*{title}"></h6>
+                                </a>
+                                <a th:if="${notification.status==0}"
+                                   th:href="'/profile/notification/'+${notification.id}"
+                                   class="text-decoration-none mt-1" href="#">
+                                    <h6 th:text="*{title}"></h6>
+                                </a>
+                                回复了你的<span class="text-success" th:text="*{type}"></span>
+                                <small class="text-muted mx-2 mt-1"
+                                       th:text="${#dates.format(notification.gmtCreated,'yyyy-MM-dd HH:mm')}"></small>
+                                <span th:if="${notification.status==0}" class="badge bg-secondary pt-2">未读</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${notificationPageDTO!=null}" class="row">
+                <div class="container">
+                    <nav th:if="${notificationPageDTO.notificationDTOS.size()>0 && notificationPageDTO.currentNumber!=0}"
+                         aria-label="Page navigation">
+                        <ul class="pagination mb-0 mt-4 pt-4 px-4 d-flex justify-content-center">
+                            <!--上一页-->
+                            <li th:if="${notificationPageDTO.previousNumber!=-1}" class="page-item">
+                                <a th:href="@{/profile/notification(page=${notificationPageDTO.previousNumber})}"
+                                   class="page-link" href="#"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <!--<li th:unless="${questionPageDTO.previousNumber!=-1}" class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <span aria-hidden="true">&laquo;</span></a>
+                        </li>-->
+                            <!--中间页-->
+                            <li th:each="index:${#numbers.sequence(notificationPageDTO.startNumber,notificationPageDTO.endNumber)}"
+                                th:class="${index==notificationPageDTO.currentNumber}?'page-item active':'page-item'"
+                                data-th-aria-current="${index==notificationPageDTO.currentNumber}?true"
+                                class="page-item active">
+                                    <span th:if="${index==notificationPageDTO.currentNumber}" th:text="${index}"
+                                          class="page-link"></span>
+                                <a th:unless="${index==notificationPageDTO.currentNumber}"
+                                   th:href="@{/profile/notification(page=${index})}"
+                                   th:text="${index}" class="page-link" href="#"></a>
+                            </li>
+                            <!--下一页-->
+                            <li th:if="${notificationPageDTO.nextNumber!=-1}" class="page-item">
+                                <a th:href="@{/profile/notification(page=${notificationPageDTO.nextNumber})}"
+                                   class="page-link"
+                                   href="#"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <!--<li th:unless="${questionPageDTO.nextNumber!=-1}" class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <span aria-hidden="true">&raquo;</span></a>
+                        </li>-->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 p-4">
+            <div class="container row">
+                <div class="btn-group-vertical">
+                    <a class="btn btn-primary" href="/profile" role="button">
+                        <i class="bi bi-person-circle"></i>个人资料
+                    </a>
+                    <a class="btn btn-primary" href="/profile/question" role="button">
+                        <i class="bi bi-question-circle"></i>我的提问
+                    </a>
+                    <button type="button" class="btn btn-primary active" aria-pressed="true">
+                        <i class="bi bi-chat-dots"></i>我的消息<span class="badge badge-light"></span>
+                    </button>
+                    <a class="btn btn-primary" href="/profile/setPassword" role="button">
+                        <i class="bi bi-shield-lock"></i>修改密码
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section th:replace="~{index::footer}" class="row">
+</section>
+<script src="/js/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+            $("#captcha").click(function () {
+                let date = new Date();
+                let name = "/captcha/" + date.getTime();
+                $("#captcha").attr("src", name);
+            })
+        }
+    );
+</script>
+</body>
+
+</html>

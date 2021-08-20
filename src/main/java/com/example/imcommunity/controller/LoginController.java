@@ -2,8 +2,6 @@ package com.example.imcommunity.controller;
 
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
-import com.example.imcommunity.exception.CustomErrorCode;
-import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.model.UserForm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;

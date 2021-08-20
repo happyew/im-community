@@ -102,11 +102,11 @@ public class PublishController {
             model.addAttribute("msg", "标题不能为空");
             return true;
         }
-        if (StrUtil.hasEmpty(questionForm.getTag())) {
+/*        if (StrUtil.hasEmpty(questionForm.getTag())) {
             model.addAttribute("questionDTO", questionDTO);
             model.addAttribute("msg", "标签不能为空");
             return true;
-        }
+        }*/
         return false;
     }
 }

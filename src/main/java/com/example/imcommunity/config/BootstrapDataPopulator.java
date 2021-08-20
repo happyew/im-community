@@ -7,20 +7,19 @@ import com.example.imcommunity.service.RoleService;
 import com.example.imcommunity.service.UserService;
 import com.example.imcommunity.util.SaltUtil;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BootstrapDataPopulator implements InitializingBean {
     private final UserService userService;
     private final RoleService roleService;
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
 
-    public BootstrapDataPopulator(UserService userService, RoleService roleService) {
+    public BootstrapDataPopulator(UserService userService, RoleService roleService, RoleRepository roleRepository) {
         this.userService = userService;
         this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
     @Override

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/css/common.css">
 </head>
 
-<body class="bg-light d-flex flex-column">
+<body class="bg-light">
 <section th:replace="~{index::navbar}"></section>
 <section class="bg-light container">
     <div class="bg-white row mt-4 pb-4">
@@ -42,9 +42,38 @@
             </div>-->
             <div th:if="${session.user!=null && questionDTO.userid==session.user.id}" class="row">
                 <div class="d-flow p-2 border-bottom">
-                    <div class=" float-end">
-                        <a th:href="@{'/publish/'+${questionDTO.id}}" href="#">编辑</a> <i
-                            class="bi bi-pencil-square"></i>
+                    <div class="float-end d-flow">
+                        <!--<a th:href="@{'/publish/'+${questionDTO.id}}" href="#">编辑</a>-->
+                        <a th:href="@{'/publish/'+${questionDTO.id}}" class="btn btn-outline-primary btn-sm" href="#"
+                           role="button"><i
+                                class="bi bi-pencil-square"></i>编辑</a>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#deleteQuestion">
+                            <i class="bi bi-trash-fill"></i>删除
+                        </button>
+                        <div class="modal fade" id="deleteQuestion" tabindex="-1" aria-labelledby="deleteQuestion"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">删除提问</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        确认删除吗?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-circle"></i>关闭
+                                        </button>
+                                        <a th:href="@{'/delete/question/'+${questionDTO.id}+'?userId='+${questionDTO.userid}}"
+                                           class="btn btn-outline-danger" href="#"
+                                           role="button"><i class="bi bi-trash-fill"></i>删除</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -100,7 +129,7 @@
                                             </div>
                                         </div>
                                         <div th:if="${session.user!=null}" class="container mt-2 pt-2 px-4">
-                                            <form th:action="'/reply/'+${comment.id}" action="/reply"
+                                            <form action="/reply"
                                                   method="POST"
                                                   class="form justify-content-center">
                                                 <input th:value="${session.user.id}" name="userId" type="hidden">
@@ -110,7 +139,7 @@
                                                        placeholder="回复..."
                                                        aria-label="default input example" autocomplete="off" required>
                                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                                                    <button type="submit" class="btn btn-success">提交</button>
+                                                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check2-square"></i>提交</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -151,7 +180,7 @@
                                   style="height: 125px" autocomplete="off" required></textarea>
                         <label for="content">回复</label>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                            <button type="submit" class="btn btn-success">提交</button>
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check2-square"></i>提交</button>
                         </div>
                     </form>
                 </div>

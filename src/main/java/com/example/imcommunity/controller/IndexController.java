@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
     private static final String PAGE = "1";
-    private static final String SIZE = "5";
+    private static final String SIZE = "10";
     private final QuestionService questionService;
 
     public IndexController(QuestionService questionService) {
