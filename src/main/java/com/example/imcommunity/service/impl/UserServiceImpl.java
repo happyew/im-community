@@ -2,6 +2,7 @@ package com.example.imcommunity.service.impl;
 
 import com.example.imcommunity.entity.Role;
 import com.example.imcommunity.entity.User;
+import com.example.imcommunity.model.SetPasswordForm;
 import com.example.imcommunity.model.UserForm;
 import com.example.imcommunity.repository.UserRepository;
 import com.example.imcommunity.service.RoleService;
@@ -12,7 +13,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -61,10 +61,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        }
-        return null;
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void update(SetPasswordForm setPasswordForm, User user) {
+        String password = setPasswordForm.getPassword();
+        user.setSalt(SaltUtil.getSalt());
+        user.setPassword(PasswordUtil.toMd5Hash(password, user.getSalt()));
+        user.setGmtModified(new Date());
+        userRepository.save(user);
     }
 }

@@ -3,8 +3,9 @@ package com.example.imcommunity.model;
 import lombok.Data;
 
 @Data
-public class UserForm {
-    private String username;
+public class SetPasswordForm {
+    private Long userId;
     private String password;
+    private String passwordOld;
     private String passwordRepeated;
 }

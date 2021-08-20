@@ -49,6 +49,10 @@ public class RegisterController {
             model.addAttribute("msg", "密码不能有空格");
             return "register";
         }
+        if (!userForm.getPassword().equals(userForm.getPasswordRepeated())){
+            model.addAttribute("msg", "两次填写的密码不一致");
+            return "register";
+        }
         if (userService.create(userForm) == null) {
             model.addAttribute("msg", "该用户名已被使用");
             return "register";

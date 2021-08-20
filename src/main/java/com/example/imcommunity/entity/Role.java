@@ -23,7 +23,7 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
     private List<User> users = new ArrayList<>();
-    @ElementCollection(targetClass = String.class)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @JoinTable(name = "role_permission")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<String> permissions = new HashSet<>();

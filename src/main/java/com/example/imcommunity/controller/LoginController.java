@@ -23,7 +23,7 @@ public class LoginController {
     @GetMapping("/login")
     public String login() {
         Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
+        if (subject.isAuthenticated() || subject.isRemembered()) {
             return "redirect:/";
         }
         return "login";
@@ -79,11 +79,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout() {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isRemembered() || subject.isAuthenticated()) {
-            subject.logout();
-            return "redirect:/";
-        }
-        throw new CustomException(CustomErrorCode.BAD_REQUEST);
+        SecurityUtils.getSubject().logout();
+        return "redirect:/";
     }
 }
