@@ -38,7 +38,7 @@ public class PublishController {
     }
 
     /**
-     * 新建或修改问题
+     * 新建问题
      *
      * @return 视图
      */
@@ -69,6 +69,14 @@ public class PublishController {
         return "publish";
     }
 
+    /**
+     * 提交修改
+     *
+     * @param id           问题id
+     * @param questionForm 问题表单
+     * @param model        模型
+     * @return 视图
+     */
     @PostMapping("/publish/{id}")
     public String update(@PathVariable Long id, QuestionForm questionForm, Model model) {
         Subject subject = SecurityUtils.getSubject();

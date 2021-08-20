@@ -29,9 +29,9 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String show(@PathVariable Long id,
                        @NotNull Model model) {
+        QuestionDTO questionDTO = questionService.findQuestionDTOById(id);
         // 增加浏览数
         questionService.viewIncrement(id);
-        QuestionDTO questionDTO = questionService.findQuestionDTOById(id);
         model.addAttribute("questionDTO", questionDTO);
         return "question";
     }

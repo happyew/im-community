@@ -26,7 +26,7 @@ public class CustomErrorController implements ErrorController {
             model.addAttribute("message", "请求出错...");
         }
         if (status.is5xxServerError()) {
-            model.addAttribute("message", "系统异常...");
+            model.addAttribute("message", status.getReasonPhrase());
         }
 
         return new ModelAndView("error");

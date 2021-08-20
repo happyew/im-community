@@ -1,6 +1,10 @@
 package com.example.imcommunity.util;
 
+import kotlin.text.Charsets;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.springframework.util.Base64Utils;
+
+import java.util.Arrays;
 
 /**
  * 盐工具类

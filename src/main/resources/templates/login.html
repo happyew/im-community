@@ -44,7 +44,8 @@
                            placeholder="captcha" autocomplete="off" required>
                     <label for="code">验证码</label>
                 </div>
-                <img class="float-end" id="captcha" src="/captcha/" alt="captcha">
+                <img th:src="'/captcha/'+${#dates.createNow().getTime()}" class="float-end" id="captcha" src="/captcha/"
+                     alt="captcha">
             </div>
             <div class="checkbox my-1 ms-1">
                 <label>

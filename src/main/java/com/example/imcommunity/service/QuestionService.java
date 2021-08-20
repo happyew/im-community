@@ -33,9 +33,9 @@ public interface QuestionService {
     /**
      * 分页查找对应Gitee用户的问题PageDTO
      *
-     * @param page      页码
-     * @param size      单页长度
-     * @param sort      排序
+     * @param page 页码
+     * @param size 单页长度
+     * @param sort 排序
      * @return 分页DTO
      */
     QuestionPageDTO findPageByUser(Integer page, Integer size, Sort sort, User user);
@@ -44,7 +44,7 @@ public interface QuestionService {
      * 根据id查找问题DTO
      *
      * @param id 问题id
-     * @return 问题DTO
+     * @return 问题DTO, 没有查询到则抛出异常
      */
     QuestionDTO findQuestionDTOById(Long id);
 

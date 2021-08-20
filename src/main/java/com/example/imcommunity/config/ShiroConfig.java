@@ -27,6 +27,7 @@ public class ShiroConfig {
         //注入安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> map = new HashMap<>();
+        map.put("/", "anon");
         map.put("/login", "anon");
         map.put("/logout", "anon");
         map.put("/register", "anon");
@@ -34,9 +35,13 @@ public class ShiroConfig {
         map.put("/js/**", "anon");
         map.put("/css/**", "anon");
         map.put("/img/**", "anon");
-        map.put("/", "anon");
-        map.put("/question/*", "anon");
-        map.put("/**", "authc");
+        map.put("/question/**", "anon");
+//        map.put("/publish/**", "user");
+//        map.put("/profile/**", "user");
+//        map.put("/comment/**", "user");
+//        map.put("/reply/**", "user");
+        map.put("/**", "user");
+//        map.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         shiroFilterFactoryBean.setLoginUrl("/login");
         return shiroFilterFactoryBean;
@@ -91,10 +96,10 @@ public class ShiroConfig {
     public RememberMeManager getRememberMeManager() {
         CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
         SimpleCookie cookie = new SimpleCookie("rememberMe");
-//        cookie.setMaxAge(30 * 24 * 60 * 60);
+        cookie.setMaxAge(30 * 24 * 60 * 60);
         rememberMeManager.setCookie(cookie);
-        rememberMeManager.setCipherKey("ZHANGXIAOHEI_CAT".getBytes());
-//        rememberMeManager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
+//        rememberMeManager.setCipherKey("ZHANGXIAOHEI_CAT".getBytes());
+        rememberMeManager.setCipherKey(Base64.decode("546w5Zyo5omNduWuneWunQ=="));
         return rememberMeManager;
     }
 }

@@ -16,8 +16,8 @@
 <section th:replace="~{index::navbar}"></section>
 <section class="bg-light my-4">
     <div class="container bg-white d-grid d-flow p-4">
-        <div class="row">
-            <div class="container col-md-8 border-end">
+        <div class="row p-4">
+            <div class="container col-md-9 border-end pe-4">
                 <h4><i class="bi bi-plus-square-dotted me-2"></i>发起提问</h4>
                 <form action="/publish" method="post">
                     <input th:if="${questionDTO!=null && questionDTO.userid!=null}"
@@ -36,7 +36,7 @@
                                     th:text="${questionDTO!=null && questionDTO.description!=null}?${questionDTO.description}"
                                     name="description" class="form-control"
                                     placeholder="问题描述..." id="description"
-                                    style="height: 300px"></textarea>
+                                    style="height: 150px"></textarea>
                         <label for="description">问题描述...</label>
                     </div>
                     <div class="form-floating my-3">
@@ -84,7 +84,7 @@
                     </div>
                 </form>
             </div>
-            <div class="container col-md-4 my-4">
+            <div class="container col-md-3 my-4">
                 <h4 class="ms-4">问题发起指南</h4>
                 <ul class="py-2">
                     <li><small>问题标题: 请用精简的语言描述您发布的问题，不超过25字</small></li>

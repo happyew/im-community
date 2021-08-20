@@ -2,6 +2,8 @@ package com.example.imcommunity.controller;
 
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
+import com.example.imcommunity.exception.CustomErrorCode;
+import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.model.UserForm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -20,7 +22,8 @@ import javax.validation.Valid;
 public class LoginController {
     @GetMapping("/login")
     public String login() {
-        if (SecurityUtils.getSubject().isAuthenticated()) {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
             return "redirect:/";
         }
         return "login";
@@ -35,7 +38,7 @@ public class LoginController {
             return "login";
         }
         Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
+        if (subject.isRemembered() || subject.isAuthenticated()) {
             return "redirect:/";
         }
         String username = userForm.getUsername();
@@ -48,20 +51,28 @@ public class LoginController {
             model.addAttribute("msg", "密码不能为空，不能有空格");
             return "login";
         }
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             if ("checked".equals(rememberMe)) {
+                System.out.println("记住我");
                 token.setRememberMe(true);
             }
             subject.login(token);
             return "redirect:/";
         } catch (UnknownAccountException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("用户名错误");
             model.addAttribute("msg", "该用户不存在");
-            return "login";
         } catch (IncorrectCredentialsException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("密码错误");
             model.addAttribute("msg", "密码错误");
+        }
+        if (subject.isAuthenticated()) {
+            System.out.println("认证成功");
+            return "redirect:/";
+        } else {
+            token.clear();
             return "login";
         }
     }
@@ -69,10 +80,10 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated()) {
+        if (subject.isRemembered() || subject.isAuthenticated()) {
             subject.logout();
             return "redirect:/";
         }
-        return "redirect:/";
+        throw new CustomException(CustomErrorCode.BAD_REQUEST);
     }
 }
