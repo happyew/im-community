@@ -95,8 +95,12 @@
                         <div class="flex-grow-1 ms-3">
                             <small class="text-muted"><span th:text="${comment.user.username}"></span></small>
                             <p class="mt-2" th:text="${comment.content}"></p>
+                            <a th:if="${session.user!=null && comment.user.id==session.user.id}"
+                               th:href="@{'/delete/comment/'+${comment.id}+'?userId='+${comment.user.id}+'&questionId='+${questionDTO.id}}"
+                               class="btn btn-outline-danger btn-sm float-end" href="#"
+                               role="button"><i class="bi bi-trash-fill"></i>删除</a>
                             <small class="text-muted">
-                                <span class="float-end mt-3 me-2"
+                                <span class="float-end mt-2 me-2"
                                       th:text="${#dates.format(comment.gmtCreated,'yyyy-MM-dd HH:mm')}"></span>
                             </small>
                             <!--二级回复-->
@@ -125,7 +129,10 @@
                                                 <p class="mt-2 mb-2" th:text="${reply.content}"></p><small
                                                     class="text-muted">
                                                 <span th:text="${#dates.format(reply.gmtCreated,'yyyy-MM-dd HH:mm')}"></span></small>
-
+                                                <a th:if="${session.user!=null && reply.user.id==session.user.id}"
+                                                   th:href="@{'/delete/reply/'+${reply.id}+'?userId='+${reply.user.id}+'&questionId='+${questionDTO.id}}"
+                                                   class="btn btn-outline-danger btn-sm float-end" href="#"
+                                                   role="button"><i class="bi bi-trash-fill"></i>删除</a>
                                             </div>
                                         </div>
                                         <div th:if="${session.user!=null}" class="container mt-2 pt-2 px-4">
@@ -139,7 +146,9 @@
                                                        placeholder="回复..."
                                                        aria-label="default input example" autocomplete="off" required>
                                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                                                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check2-square"></i>提交</button>
+                                                    <button type="submit" class="btn btn-success btn-sm"><i
+                                                            class="bi bi-check2-square"></i>提交
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -180,7 +189,8 @@
                                   style="height: 125px" autocomplete="off" required></textarea>
                         <label for="content">回复</label>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-2">
-                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check2-square"></i>提交</button>
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check2-square"></i>提交
+                            </button>
                         </div>
                     </form>
                 </div>

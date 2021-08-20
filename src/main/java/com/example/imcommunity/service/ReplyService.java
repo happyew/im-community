@@ -5,4 +5,6 @@ import com.example.imcommunity.model.ReplyForm;
 
 public interface ReplyService {
     Reply create(ReplyForm replyForm);
+
+    void deleteById(Long id);
 }

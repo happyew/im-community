@@ -7,4 +7,6 @@ public interface CommentService {
     Comment create(CommentForm commentForm);
 
     Comment findCommentById(Long id);
+
+    void deleteById(Long id);
 }

@@ -39,7 +39,10 @@ public class BootstrapDataPopulator implements InitializingBean {
         userRole.setName("user");
         userRole.getPermissions().add("question:*:");
         userRole.getPermissions().add("profile:*:");
-        roleService.create(userRole);
+        userRole.getPermissions().add("comment:*:");
+        userRole.getPermissions().add("reply:*:");
+//        roleService.create(userRole);
+        roleService.update(userRole);
 
 //        System.out.println("===================someTest========================");
 //        System.out.println(roleRepository.findRolesByPermissions("*"));

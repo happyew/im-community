@@ -21,9 +21,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role create(Role role) {
         Role roleExisted = findRoleByName(role.getName());
-        if (roleExisted == null){
+        if (roleExisted == null) {
             return roleRepository.save(role);
         }
         return null;
+    }
+
+    @Override
+    public void update(Role role) {
+        Role roleExisted = findRoleByName(role.getName());
+        roleExisted.setPermissions(role.getPermissions());
+        roleRepository.save(roleExisted);
     }
 }

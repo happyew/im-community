@@ -21,7 +21,7 @@ public class LoginController {
     @GetMapping("/login")
     public String login() {
         Subject subject = SecurityUtils.getSubject();
-        if (subject.isAuthenticated() || subject.isRemembered()) {
+        if (subject.isRemembered() || subject.isAuthenticated()) {
             return "redirect:/";
         }
         return "login";

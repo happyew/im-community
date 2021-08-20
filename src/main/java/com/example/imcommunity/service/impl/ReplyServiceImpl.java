@@ -42,4 +42,9 @@ public class ReplyServiceImpl implements ReplyService {
 
         return replyRepository.save(newReply);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        replyRepository.deleteById(id);
+    }
 }

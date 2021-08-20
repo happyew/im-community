@@ -6,4 +6,6 @@ public interface RoleService {
     Role findRoleByName(String name);
 
     Role create(Role role);
+
+    void update(Role role);
 }
