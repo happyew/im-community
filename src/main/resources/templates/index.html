@@ -69,7 +69,7 @@
                         <a class="nav-link" href="#">消灭零回复</a>
                     </li>-->
                 </ul>
-                <div th:if="${questionPageDTO!=null&&questionPageDTO.questionDTOList.size()>0}" class="row">
+                <div th:if="${questionPageDTO!=null && questionPageDTO.questionDTOList.size()>0}" class="row">
                     <div th:each="question,index:${questionPageDTO.questionDTOList}" th:object="${question}"
                          class="container d-flex mt-2 border-bottom">
                         <div class="flex-shrink-0">
@@ -78,7 +78,7 @@
                                  alt="avatar">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a th:href="@{'/question/'+${question.id}}" class="text-decoration-none" href="#">
+                            <a th:href="'/question/'+${question.id}" class="text-decoration-none" href="#">
                                 <h6 th:text="*{title}">Lorem ipsum dolor sit amet.</h6>
                             </a>
                             <p><small class="text-muted"><span th:text="${question.comments.size()}"></span>个回复 ·
@@ -99,7 +99,7 @@
                     <ul class="pagination mb-0 mt-4 pt-4 px-4 d-flex justify-content-center">
                         <!--上一页-->
                         <li th:if="${questionPageDTO.previousNumber!=-1}" class="page-item">
-                            <a th:href="@{/(page=${questionPageDTO.previousNumber})}" class="page-link" href="#"
+                            <a th:href="'/?page='+${questionPageDTO.previousNumber}" class="page-link" href="#"
                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
@@ -116,13 +116,13 @@
                             <span th:if="${index==questionPageDTO.currentNumber}"
                                   th:text="${index}"
                                   class="page-link"></span>
-                            <a th:unless="${index==questionPageDTO.currentNumber}" th:href="@{/(page=${index})}"
+                            <a th:unless="${index==questionPageDTO.currentNumber}" th:href="'/?page='+${index}"
                                th:text="${index}"
                                class="page-link" href="#"></a>
                         </li>
                         <!--下一页-->
                         <li th:if="${questionPageDTO.nextNumber!=-1}" class="page-item">
-                            <a th:href="@{/(page=${questionPageDTO.nextNumber})}" class="page-link" href="#"
+                            <a th:href="'/?page='+${questionPageDTO.nextNumber}" class="page-link" href="#"
                                aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
