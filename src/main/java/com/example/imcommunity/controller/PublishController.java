@@ -7,6 +7,7 @@ import com.example.imcommunity.exception.CustomErrorCode;
 import com.example.imcommunity.exception.CustomException;
 import com.example.imcommunity.model.QuestionForm;
 import com.example.imcommunity.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 /**
  * 登陆后发起提问的控制器
  */
+@Slf4j
 @Controller
 public class PublishController {
     private final QuestionService questionService;
@@ -47,6 +49,7 @@ public class PublishController {
         if (checkEmpty(questionForm, model)) return "publish";
         // 新建问题
         Question questionSaved = questionService.create(questionForm);
+//        log.info(StrUtil.format("用户ID:{}, 成功新建问题:{}", questionForm.getUserId(), questionForm.getTitle()));
         return StrUtil.format("redirect:/question/{}", questionSaved.getId());
     }
 
@@ -86,6 +89,7 @@ public class PublishController {
         }
         if (checkEmpty(questionForm, model)) return "publish";
         questionService.update(questionForm);
+//        log.info(StrUtil.format("用户ID:{}, 成功修改问题:{}", questionForm.getUserId(), questionForm.getTitle()));
         return StrUtil.format("redirect:/question/{}", id);
     }
 

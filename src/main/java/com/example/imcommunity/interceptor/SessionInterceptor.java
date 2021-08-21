@@ -44,7 +44,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         if (subject.isRemembered() || subject.isAuthenticated()) {
             String principal = (String) subject.getPrincipal();
             User user = userService.findByUsername(principal);
-            System.out.println(user);
+//            System.out.println(user);
             if (user != null) {
                 session.setAttribute("user", user);
                 return true;

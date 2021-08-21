@@ -19,7 +19,8 @@
         <div class="row p-4">
             <div class="container col-md-9 border-end pe-4">
                 <h4><i class="bi bi-question-circle me-2"></i>发起提问</h4>
-                <form action="/publish" method="post">
+                <form th:action="${questionDTO!=null && questionDTO.id!=null} ? '/publish/' + ${questionDTO.id} : '/publish'"
+                      action="/publish" method="post">
                     <input th:if="${session.user.id!=null}"
                            th:value="${session.user.id}" type="hidden" name="userId">
                     <input th:if="${questionDTO!=null && questionDTO.id!=null}"
@@ -78,7 +79,8 @@
                         </div>
                         <div class="container col-md-4 col-sm-12 mt-4">
                             <div class="d-grid ms-auto gap-2 justify-content-md-end my-4">
-                                <button type="submit" class="btn btn-success"><i class="bi bi-check2-square"></i>提交</button>
+                                <button type="submit" class="btn btn-success"><i class="bi bi-check2-square"></i>提交
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.model.UserForm;
 import com.example.imcommunity.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class RegisterController {
     private final UserService userService;
@@ -57,6 +59,7 @@ public class RegisterController {
             model.addAttribute("msg", "该用户名已被使用");
             return "register";
         }
+        log.info(StrUtil.format("注册成功: 用户名:{}, 密码:{}", userForm.getUsername(), userForm.getPassword()));
         model.addAttribute("msg", "注册成功!");
         return "registerSuccess";
     }

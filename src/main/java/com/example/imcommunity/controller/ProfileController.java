@@ -46,7 +46,7 @@ public class ProfileController {
         User user = (User) session.getAttribute("user");
         Sort sort = Sort.by(Sort.Direction.DESC, "gmtModified");
         QuestionPageDTO questionPageDTO = questionService.findPageByUser(page, size, sort, user);
-        System.out.println(questionPageDTO);
+//        System.out.println(questionPageDTO);
         model.addAttribute("questionPageDTO", questionPageDTO);
         return "profileQuestion";
     }

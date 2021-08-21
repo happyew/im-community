@@ -3,6 +3,7 @@ package com.example.imcommunity.controller;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.core.util.StrUtil;
 import com.example.imcommunity.model.UserForm;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 public class LoginController {
     @GetMapping("/login")
@@ -52,22 +54,21 @@ public class LoginController {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             if ("checked".equals(rememberMe)) {
-                System.out.println("记住我");
                 token.setRememberMe(true);
             }
             subject.login(token);
             return "redirect:/";
         } catch (UnknownAccountException e) {
 //            e.printStackTrace();
-            System.out.println("用户名错误");
+//            System.out.println("用户名错误");
             model.addAttribute("msg", "该用户不存在");
         } catch (IncorrectCredentialsException e) {
 //            e.printStackTrace();
-            System.out.println("密码错误");
+//            System.out.println("密码错误");
             model.addAttribute("msg", "密码错误");
         }
         if (subject.isAuthenticated()) {
-            System.out.println("认证成功");
+            log.info(StrUtil.format("登录成功: 用户:{}, 密码:{}", userForm.getUsername(), userForm.getPassword()));
             return "redirect:/";
         } else {
             token.clear();
