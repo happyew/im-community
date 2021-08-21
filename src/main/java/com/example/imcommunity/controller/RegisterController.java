@@ -59,7 +59,7 @@ public class RegisterController {
             model.addAttribute("msg", "该用户名已被使用");
             return "register";
         }
-        log.info(StrUtil.format("注册成功: 用户名:{}, 密码:{}", userForm.getUsername(), userForm.getPassword()));
+        log.info("注册成功: 用户名:{}, 密码:{}", userForm.getUsername(), userForm.getPassword());
         model.addAttribute("msg", "注册成功!");
         return "registerSuccess";
     }

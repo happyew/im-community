@@ -68,7 +68,7 @@ public class LoginController {
             model.addAttribute("msg", "密码错误");
         }
         if (subject.isAuthenticated()) {
-            log.info(StrUtil.format("登录成功: 用户:{}, 密码:{}", userForm.getUsername(), userForm.getPassword()));
+            log.info("登录成功: 用户:{}, 密码:{}", userForm.getUsername(), userForm.getPassword());
             return "redirect:/";
         } else {
             token.clear();
@@ -78,7 +78,9 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout() {
-        SecurityUtils.getSubject().logout();
+        Subject subject = SecurityUtils.getSubject();
+        log.info("用户:{},已退出登录", subject.getPrincipal());
+        subject.logout();
         return "redirect:/";
     }
 }
