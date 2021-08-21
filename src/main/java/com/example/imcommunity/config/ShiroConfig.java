@@ -27,6 +27,7 @@ public class ShiroConfig {
         //注入安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, String> map = new HashMap<>();
+        map.put("/favicon.ico", "anon");
         map.put("/", "anon");
         map.put("/login", "anon");
         map.put("/logout", "anon");
