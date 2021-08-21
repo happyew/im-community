@@ -5,7 +5,6 @@ import com.example.imcommunity.dto.NotificationPageDTO;
 import com.example.imcommunity.entity.Notification;
 import com.example.imcommunity.entity.User;
 import com.example.imcommunity.service.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +15,11 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class NotificationController {
-    @Autowired
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
+
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     @GetMapping("/profile/notification")
     public String show(HttpSession session, Model model,

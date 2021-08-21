@@ -95,10 +95,34 @@
                         <div class="flex-grow-1 ms-3">
                             <small class="text-muted"><span th:text="${comment.user.username}"></span></small>
                             <p class="mt-2" th:text="${comment.content}"></p>
-                            <a th:if="${session.user!=null && comment.user.id==session.user.id}"
-                               th:href="@{'/delete/comment/'+${comment.id}+'?userId='+${comment.user.id}+'&questionId='+${questionDTO.id}}"
-                               class="btn btn-outline-danger btn-sm float-end" href="#"
-                               role="button"><i class="bi bi-trash-fill"></i>删除</a>
+                            <button th:if="${session.user!=null && comment.user.id==session.user.id}" type="button" class="btn btn-outline-danger btn-sm float-end" data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#comment'+${comment.id}" data-bs-target="#deleteQuestion">
+                                <i class="bi bi-trash-fill"></i>删除
+                            </button>
+                            <div class="modal fade" th:id="'comment'+${comment.id}" tabindex="-1" aria-labelledby="deleteQuestion"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">删除提问</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            确认删除吗?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                <i class="bi bi-x-circle"></i>关闭
+                                            </button>
+                                            <a th:if="${session.user!=null && comment.user.id==session.user.id}"
+                                               th:href="@{'/delete/comment/'+${comment.id}+'?userId='+${comment.user.id}+'&questionId='+${questionDTO.id}}"
+                                               class="btn btn-outline-danger" href="#"
+                                               role="button"><i class="bi bi-trash-fill"></i>删除</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <small class="text-muted">
                                 <span class="float-end mt-2 me-2"
                                       th:text="${#dates.format(comment.gmtCreated,'yyyy-MM-dd HH:mm')}"></span>
@@ -129,10 +153,34 @@
                                                 <p class="mt-2 mb-2" th:text="${reply.content}"></p><small
                                                     class="text-muted">
                                                 <span th:text="${#dates.format(reply.gmtCreated,'yyyy-MM-dd HH:mm')}"></span></small>
-                                                <a th:if="${session.user!=null && reply.user.id==session.user.id}"
-                                                   th:href="@{'/delete/reply/'+${reply.id}+'?userId='+${reply.user.id}+'&questionId='+${questionDTO.id}}"
-                                                   class="btn btn-outline-danger btn-sm float-end" href="#"
-                                                   role="button"><i class="bi bi-trash-fill"></i>删除</a>
+                                                <button th:if="${session.user!=null && reply.user.id==session.user.id}" type="button" class="btn btn-outline-danger btn-sm float-end" data-bs-toggle="modal"
+                                                        th:attr="data-bs-target='#reply'+${reply.id}" data-bs-target="#deleteQuestion">
+                                                    <i class="bi bi-trash-fill"></i>删除
+                                                </button>
+                                                <div class="modal fade" th:id="'reply'+${reply.id}" tabindex="-1" aria-labelledby="deleteQuestion"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">删除提问</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                确认删除吗?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                    <i class="bi bi-x-circle"></i>关闭
+                                                                </button>
+                                                                <a th:if="${session.user!=null && reply.user.id==session.user.id}"
+                                                                   th:href="@{'/delete/reply/'+${reply.id}+'?userId='+${reply.user.id}+'&questionId='+${questionDTO.id}}"
+                                                                   class="btn btn-outline-danger" href="#"
+                                                                   role="button"><i class="bi bi-trash-fill"></i>删除</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div th:if="${session.user!=null}" class="container mt-2 pt-2 px-4">

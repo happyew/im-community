@@ -32,7 +32,7 @@ public class BootstrapDataPopulator implements InitializingBean {
         Role adminRole = new Role("admin");
         adminRole.getPermissions().add("*");
         root.getRoles().add(adminRole);
-        userService.create(root);
+//        userService.create(root);
 
         //普通用户
         Role userRole = new Role();
@@ -42,7 +42,7 @@ public class BootstrapDataPopulator implements InitializingBean {
         userRole.getPermissions().add("comment:*:");
         userRole.getPermissions().add("reply:*:");
 //        roleService.create(userRole);
-        roleService.update(userRole);
+//        roleService.update(userRole);
 
 //        System.out.println("===================someTest========================");
 //        System.out.println(roleRepository.findRolesByPermissions("*"));
